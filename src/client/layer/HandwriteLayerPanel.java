@@ -23,6 +23,8 @@ public class HandwriteLayerPanel extends AbstLayerPanel implements
 
 	private static final Dimension PANEL_SIZE = new Dimension(800, 640);
 	private static final Color PANEL_BACKGROUND = new Color(0, 0, 0, 50);
+	
+	//描画する線の太さ
 	private static final int DRAW_LINE_BOLD = 1;
 
 	private static final HandwriteLayerPanel hlPanel = new HandwriteLayerPanel();

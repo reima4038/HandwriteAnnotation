@@ -26,11 +26,7 @@ public class LineRecord {
 
 	public LineRecord() {
 		//初期化処理
-		userID = DEFAULT_VALUE;
-		color = DEFAULT_VALUE;
-		clickTimeStamp = DEFAULT_VALUE;
-		releaseTimeStamp = DEFAULT_VALUE;
-		record = new ArrayList<Point>();
+		initDefaultValue();
 	}
 	
 	public LineRecord(int userID, int color, long clickTimeStamp,
@@ -42,9 +38,28 @@ public class LineRecord {
 		this.releaseTimeStamp = releaseTimeStamp;
 		this.record = record;
 	}
+	
+	/**
+	 * 初期化処理を行う
+	 */
+	public void initDefaultValue() {
+		userID = DEFAULT_VALUE;
+		color = DEFAULT_VALUE;
+		clickTimeStamp = DEFAULT_VALUE;
+		releaseTimeStamp = DEFAULT_VALUE;
+		record = new ArrayList<Point>();
+	}
+	
+	/**
+	 * ディープコピーを生成して返す
+	 * @return
+	 */
+	public LineRecord clone(){
+		return new LineRecord(userID, color, clickTimeStamp, releaseTimeStamp, (ArrayList<Point>) record.clone());
+	}
 
 	/*
-	 * getter
+	 * getter, setter
 	 */
 	public int getUserID() {
 		return userID;
@@ -66,9 +81,6 @@ public class LineRecord {
 		return record;
 	}
 
-	/*
-	 * setter
-	 */
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}

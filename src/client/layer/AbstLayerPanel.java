@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  */
 public abstract class AbstLayerPanel extends JPanel implements Runnable{
 
-	private static final int DEFAULT_FPS = 60;
+	private static final int DEFAULT_FPS = 100;
 
 	int fps;
 	 

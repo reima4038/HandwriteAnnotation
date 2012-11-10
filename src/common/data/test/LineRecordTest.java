@@ -12,16 +12,12 @@ public class LineRecordTest {
 	private static final int DEFAULT_VALUE = -1;
 	private LineRecord lRecord;
 	
-	@Before
-	public void initBeforeTest(){
-		lRecord = new LineRecord();
-	}
-		
 	/**
 	 * 変数が初期化されているか
 	 */
 	@Test
 	public void initializeTest() {
+		lRecord = new LineRecord();
 		assertEquals(lRecord.getUserID(), DEFAULT_VALUE);
 		assertEquals(lRecord.getColor(), DEFAULT_VALUE);
 		assertEquals(lRecord.getClickTimeStamp(), DEFAULT_VALUE);
@@ -33,10 +29,4 @@ public class LineRecordTest {
 			assertTrue(lRecord.getRecord().size() == 0);
 		}
 	}
-	
-	/**
-	 * クリックした時刻よりリリースした時刻が早い場合にエラー
-	 */
-	
-	
 }

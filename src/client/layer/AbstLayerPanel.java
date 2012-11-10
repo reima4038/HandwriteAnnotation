@@ -12,7 +12,8 @@ import javax.swing.JPanel;
  */
 public abstract class AbstLayerPanel extends JPanel implements Runnable{
 
-	private static final int DEFAULT_FPS = 60;
+	// 負荷テストしたい.2000~でほぼ遅延なし
+	private static final int DEFAULT_FPS = 1500;
 
 	int fps;
 	 

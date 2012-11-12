@@ -32,9 +32,6 @@ public class ClientUDPTest implements Prefs{
 		if(cUDP.getRecvPacket() == null){
 			fail("パケット受信用変数が初期化されていません");
 		}
-		if(cUDP.getSendPacket() != null){
-			fail("パケット送信用変数が初期化されています");
-		}
 		if(cUDP.getBuf() == null){
 			fail("送受信のバッファ用配列のインスタンスが作られていません");
 		}

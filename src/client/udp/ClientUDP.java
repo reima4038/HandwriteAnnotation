@@ -25,7 +25,6 @@ public class ClientUDP implements Runnable, Prefs{
 	private byte[] buf;
 	private DatagramSocket socket;
 	private DatagramPacket recvPacket;
-	private DatagramPacket sendPacket;
 
 	public ClientUDP(int fps) {
 		this.fps = fps;
@@ -46,7 +45,6 @@ public class ClientUDP implements Runnable, Prefs{
 		try {
 			socket = new DatagramSocket(DEFAULT_PORT);
 			recvPacket = new DatagramPacket(buf, BUFSIZE);
-			sendPacket = null;
 		} catch (SocketException e) {
 			Utl.printlnErr("ソケットの開放に失敗しました.");
 			e.printStackTrace();
@@ -176,10 +174,6 @@ public class ClientUDP implements Runnable, Prefs{
 		return recvPacket;
 	}
 
-	public DatagramPacket getSendPacket() {
-		return sendPacket;
-	}
-
 	public byte[] getBuf() {
 		return buf;
 	}
@@ -190,10 +184,6 @@ public class ClientUDP implements Runnable, Prefs{
 
 	public void setRecvPacket(DatagramPacket recvPacket) {
 		this.recvPacket = recvPacket;
-	}
-
-	public void setSendPacket(DatagramPacket sendPacket) {
-		this.sendPacket = sendPacket;
 	}
 	
 }

@@ -22,7 +22,7 @@ public class ClientUDPTest {
 		DatagramSocket socket = cUDP.getSocket();
 		//ソケットが開放されているか確認
 		if(socket.isClosed()){
-			fail("ソケットが開放されていません.");
+			fail("ソケット開放処理を行いましたが、ソケットが開放されていません.");
 		}
 	}
 	
@@ -32,7 +32,18 @@ public class ClientUDPTest {
 	 * ソケット通信が閉じられているか
 	 */
 	public void socketCloseTest() {
-		fail("Not yet implemented");
+		/*
+		 * ソケットの開放
+		 * Singletonのインスタンス生成タイミングは初めてgetInstanceが呼ばれた時
+		 * インスタンスを呼び出すことでコンストラクタ内に書かれたソケット開放処理を実行する
+		 */
+		ClientUDP.getInstance();
+		//ソケットを閉じる
+		ClientUDP.getInstance().close();
+		//ソケットが閉じられているか確認
+		if(!ClientUDP.getInstance().getSocket().isClosed()){
+			fail("ソケットを閉じる処理を実行しましたが、ソケットが閉じられていません.");
+		}
 	}
 	
 	/**

@@ -38,8 +38,11 @@ public class ClientUDP implements Runnable, Prefs{
 
 	}
 
+	/**
+	 * ソケットを閉じる
+	 */
 	public void close() {
-
+		socket.close();
 	}
 
 	public static ClientUDP getInstance() {

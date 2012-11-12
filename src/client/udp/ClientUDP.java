@@ -1,25 +1,35 @@
 package client.udp;
 
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 
 import common.data.Prefs;
+import common.data.SessionStatus;
 import common.util.Utl;
 
 public class ClientUDP implements Runnable, Prefs{
 
 	private static final int DEFAULT_FPS = 1500;
+	public static final int BUFSIZE = 1024;
 	private static final ClientUDP cUDP = new ClientUDP();
 	
-	private DatagramSocket socket;
-
 	private int fps;
+
+	private byte[] buf;
+	private DatagramSocket socket;
+	private DatagramPacket recvPacket;
+	private DatagramPacket sendPacket;
 
 	public ClientUDP(int fps) {
 		this.fps = fps;
+		buf = new byte[BUFSIZE];
 		
 		try {
 			socket = new DatagramSocket(DEFAULT_PORT);
+			recvPacket = new DatagramPacket(buf, BUFSIZE);
+			sendPacket = null;
 		} catch (SocketException e) {
 			Utl.printlnErr("ソケットの開放に失敗しました.");
 			e.printStackTrace();
@@ -28,6 +38,7 @@ public class ClientUDP implements Runnable, Prefs{
 
 	public ClientUDP() {
 		this(DEFAULT_FPS);
+		
 	}
 
 	public void sendPacket() {
@@ -74,6 +85,30 @@ public class ClientUDP implements Runnable, Prefs{
 	
 	public DatagramSocket getSocket(){
 		return socket;
+	}
+
+	public DatagramPacket getRecvPacket() {
+		return recvPacket;
+	}
+
+	public DatagramPacket getSendPacket() {
+		return sendPacket;
+	}
+
+	public byte[] getBuf() {
+		return buf;
+	}
+
+	public void setBuf(byte[] buf) {
+		this.buf = buf;
+	}
+
+	public void setRecvPacket(DatagramPacket recvPacket) {
+		this.recvPacket = recvPacket;
+	}
+
+	public void setSendPacket(DatagramPacket sendPacket) {
+		this.sendPacket = sendPacket;
 	}
 	
 }

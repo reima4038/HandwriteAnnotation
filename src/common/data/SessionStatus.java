@@ -103,6 +103,10 @@ public class SessionStatus {
 	public boolean getRecordingFlag() {
 		return recordingFlag;
 	}
+	
+	public InetAddress getSInetAddress(){
+		return sInetAddress;
+	}
 
 	public void setLatestLineRecord(LineRecord latestLineRecord) {
 		this.latestLineRecord = latestLineRecord;

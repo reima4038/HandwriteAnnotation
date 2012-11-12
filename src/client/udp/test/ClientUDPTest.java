@@ -53,6 +53,7 @@ public class ClientUDPTest implements Prefs{
 	public void socketOpenTest(){
 		//UDPクラスのインスタンスを取得
 		ClientUDP cUDP = ClientUDP.getInstance();
+		cUDP.init();
 		//通信を行うDatagramSocketを取得
 		DatagramSocket socket = cUDP.getSocket();
 		//ソケットが開放されているか確認
@@ -72,7 +73,7 @@ public class ClientUDPTest implements Prefs{
 		 * Singletonのインスタンス生成タイミングは初めてgetInstanceが呼ばれた時
 		 * インスタンスを呼び出すことでコンストラクタ内に書かれたソケット開放処理を実行する
 		 */
-		ClientUDP.getInstance();
+		ClientUDP.getInstance().init();
 		//ソケットを閉じる
 		ClientUDP.getInstance().close();
 		//ソケットが閉じられているか確認
@@ -80,39 +81,6 @@ public class ClientUDPTest implements Prefs{
 			fail("ソケットを閉じる処理を実行しましたが、ソケットが閉じられていません.");
 		}
 	}
-
-	@Test
-	/**
-	 * パケットが正常に送信されているか
-	 */
-	public void packetSendTest() {
-		//ソケットの開放
-		//パケット準備
-		//パケットを送信
-		fail("Not yet implemented");
-	}
-	
-	/**
-	 * 送信するパケットをバイトコードにできるか
-	 */
-	public void packetCodeTest() {
-		fail("Not yet implemented");
-	}
-	
-	/**
-	 * パケットを正常に受信できたか
-	 */
-	public void packetReceiveTest() {
-		fail("Not yet implemented");
-	}
-	
-	/**
-	 * 受信したパケットのバイトコードをデコードできるか
-	 */
-	public void packetDecodeTest() {
-		fail("Not yet implemented");
-	}
-	
 
 	
 }

@@ -19,8 +19,15 @@ public class ClientUDPTest implements Prefs{
 	 */
 	public void initTest(){
 		ClientUDP cUDP = ClientUDP.getInstance();
+		cUDP.init();
+		
 		if(cUDP.getSocket() == null){
 			fail("ソケットが初期化されていません");
+		}
+		if(cUDP.getSocket().getLocalPort() != Prefs.DEFAULT_PORT){
+			fail("ポート番号がデフォルトの値と異なります" + 
+					"expect: " + Prefs.DEFAULT_PORT + 
+					", actual: " + cUDP.getSocket().getLocalPort());
 		}
 		if(cUDP.getRecvPacket() == null){
 			fail("パケット受信用変数が初期化されていません");

@@ -24,6 +24,18 @@ public class ClientUDP implements Runnable, Prefs{
 
 	public ClientUDP(int fps) {
 		this.fps = fps;
+		init();
+	}
+
+	public ClientUDP() {
+		this(DEFAULT_FPS);
+		
+	}
+	
+	/**
+	 * 初期化処理
+	 */
+	public void init(){
 		buf = new byte[BUFSIZE];
 		
 		try {
@@ -36,13 +48,7 @@ public class ClientUDP implements Runnable, Prefs{
 		}
 	}
 
-	public ClientUDP() {
-		this(DEFAULT_FPS);
-		
-	}
-
 	public void sendPacket() {
-		
 	}
 
 	public void ReceivePacket() {

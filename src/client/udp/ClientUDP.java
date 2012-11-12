@@ -1,6 +1,7 @@
 package client.udp;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -55,14 +56,27 @@ public class ClientUDP implements Runnable, Prefs{
 	/**
 	 * パケット送信
 	 */
-	public void sendPacket() {
+	public void sendPacket(LineRecord lr) {
+		try {
+			socket.send(recordToSendPacket(lr));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * パケット受信
 	 */
-	public void ReceivePacket() {
+	public LineRecord receivePacket() {
+		LineRecord lr = null;
+		try {
+			socket.receive(recvPacket);
+			lr = this.recordFromRecvPacket(recvPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
+		return lr;
 	}
 
 	/**

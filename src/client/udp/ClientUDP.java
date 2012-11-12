@@ -1,14 +1,29 @@
 package client.udp;
 
-public class ClientUDP implements Runnable {
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
+import common.data.Prefs;
+import common.util.Utl;
+
+public class ClientUDP implements Runnable, Prefs{
 
 	private static final int DEFAULT_FPS = 1500;
 	private static final ClientUDP cUDP = new ClientUDP();
+	
+	private DatagramSocket socket;
 
 	private int fps;
 
 	public ClientUDP(int fps) {
 		this.fps = fps;
+		
+		try {
+			socket = new DatagramSocket(DEFAULT_PORT);
+		} catch (SocketException e) {
+			Utl.printlnErr("ソケットの開放に失敗しました.");
+			e.printStackTrace();
+		}
 	}
 
 	public ClientUDP() {
@@ -16,7 +31,7 @@ public class ClientUDP implements Runnable {
 	}
 
 	public void sendPacket() {
-
+		
 	}
 
 	public void ReceivePacket() {
@@ -49,4 +64,13 @@ public class ClientUDP implements Runnable {
 		}
 
 	}
+	
+	/*
+	 * getter, setter
+	 */
+	
+	public DatagramSocket getSocket(){
+		return socket;
+	}
+	
 }

@@ -65,7 +65,7 @@ public class ClientUDP implements Runnable, Prefs{
 	/**
 	 * パケット受信
 	 */
-	public LineRecord receivePacket() {
+	public void receivePacket() {
 		LineRecord lr = null;
 		try {
 			socket.receive(recvPacket);
@@ -74,7 +74,9 @@ public class ClientUDP implements Runnable, Prefs{
 			e.printStackTrace();
 		}
 		
-		return lr;
+		//ラインレコードをセッションステータスの受信したレコードに反映
+		SessionStatus.getInstance().setReceivedLineRecord(lr);
+		
 	}
 
 	/**
@@ -92,6 +94,9 @@ public class ClientUDP implements Runnable, Prefs{
 	public void run() {
 		long lasttime = System.currentTimeMillis();
 		while (true) {
+			//パケットの受信待機
+			receivePacket();
+			
 			long nowtime = System.currentTimeMillis();
 			if (lasttime - nowtime < 1000 / fps) {
 				try {
@@ -115,8 +120,10 @@ public class ClientUDP implements Runnable, Prefs{
 		DatagramPacket sendPacket;
 		byte[] sendData;
 		ByteBuffer bBuf = ByteBuffer.allocate(8192);
+		//バイトコードの記法を指定
 		bBuf.order(ByteOrder.BIG_ENDIAN);
 		
+		//送信用データをバッファに設定
 		bBuf.putInt(lr.getUserID());
 		bBuf.putInt(lr.getColor());
 		bBuf.putLong(lr.getClickTimeStamp());

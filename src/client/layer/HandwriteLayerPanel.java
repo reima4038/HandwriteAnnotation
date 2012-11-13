@@ -9,9 +9,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import client.udp.ClientUDP;
+
+import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
-import common.util.Utl;
 
 /**
  * 手書きレイヤの本体
@@ -163,11 +165,13 @@ public class HandwriteLayerPanel extends AbstLayerPanel implements
 	@Override
 	public void mouseReleased(MouseEvent ev) {
 		SessionStatus ss = SessionStatus.getInstance();
+		LineRecord lr = ss.getLatestLineRecord().clone();
 
 		//最新の注釈をUDPで相手に送信
+		ClientUDP.getInstance().sendPacket(lr);
 		
 		//最新の注釈レコードを統合レコードに移行
-		ss.getLineRecords().add(ss.getLatestLineRecord().clone());
+		ss.getLineRecords().add(lr);
 		
 		//最新の注釈を破棄
 		ss.getLatestLineRecord().initDefaultValue();

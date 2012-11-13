@@ -1,4 +1,4 @@
-package common.udp;
+package common.abst;
 
 import java.awt.Point;
 import java.net.DatagramPacket;

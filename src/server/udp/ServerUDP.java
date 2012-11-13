@@ -8,10 +8,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
+import common.abst.AbstUDP;
 import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
-import common.udp.AbstUDP;
 
 
 public class ServerUDP extends AbstUDP{

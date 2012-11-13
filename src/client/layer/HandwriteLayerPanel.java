@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 
 import client.udp.ClientUDP;
 
+import common.abst.AbstRunnablePanel;
 import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
@@ -20,7 +21,7 @@ import common.util.CDraw;
  * 
  * @author Reima
  */
-public class HandwriteLayerPanel extends AbstLayerPanel implements
+public class HandwriteLayerPanel extends AbstRunnablePanel implements
 		MouseListener, MouseMotionListener {
 
 	private static final Dimension PANEL_SIZE = new Dimension(800, 640);
@@ -50,13 +51,13 @@ public class HandwriteLayerPanel extends AbstLayerPanel implements
 	}
 
 	@Override
-	void frameUpdate(int skipped) {
+	protected void frameUpdate(int skipped) {
 
 		sortHandwriteAnnotation();
 	}
 
 	@Override
-	void frameRender(Graphics2D g) {
+	protected void frameRender(Graphics2D g) {
 		g.setBackground(PANEL_BACKGROUND);
 		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
 		drawHandwriteAnnotation(g);

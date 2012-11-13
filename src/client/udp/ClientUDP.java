@@ -134,10 +134,13 @@ public class ClientUDP implements Runnable, Prefs{
 			bBuf.putInt(lr.getRecord().get(i).getLocation().y);
 		}
 		
+		//送信用データを用意
 		sendData = new byte[bBuf.position()];
 		System.arraycopy(bBuf.array(), 0, sendData, 0, sendData.length);
 		
+		//サーバーのアドレスをセッションステータスから取得
 		InetAddress ip = SessionStatus.getInstance().getSInetAddress();
+		//送信用データ、アドレス、ポートの情報を元に送信用パケットを用意
 		sendPacket = new DatagramPacket(sendData, sendData.length, ip, Prefs.DEFAULT_PORT);
 		
 		return sendPacket;
@@ -151,13 +154,14 @@ public class ClientUDP implements Runnable, Prefs{
 		LineRecord lr = new LineRecord();
 		byte[] recvData = recvPacket.getData();
 		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
+		//バイトコードの記法はビッグエンディアンに指定
 		bBuf.order(ByteOrder.BIG_ENDIAN);
 		
+		//バッファからデータを取り出してLineRecordクラスのメンバに代入
 		lr.setUserID(bBuf.getInt());
 		lr.setColor(bBuf.getInt());
 		lr.setClickTimeStamp(bBuf.getLong());
 		lr.setReleaseTimeStamp(bBuf.getLong());
-		
 		int recordSize = bBuf.getInt();
 		int x, y;
 		for(int i = 0; i < recordSize; i++){

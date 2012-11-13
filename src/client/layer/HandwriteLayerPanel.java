@@ -39,9 +39,14 @@ public class HandwriteLayerPanel extends AbstLayerPanel implements
 		setFocusable(true);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-
-		Thread th = new Thread(this);
-		th.start();
+		
+		//クライアント側のUDP用スレッド
+		Thread udpTh = new Thread(ClientUDP.getInstance());
+		//メインループ用のスレッド
+		Thread mainTh = new Thread(this);
+		
+		udpTh.start();
+		mainTh.start();
 	}
 
 	@Override

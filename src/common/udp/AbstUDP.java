@@ -55,7 +55,7 @@ public abstract class AbstUDP implements Runnable, Prefs{
 	/**
 	 * パケット送信
 	 */
-	public abstract void sendPacket();
+	public abstract void sendPacket(LineRecord lr);
 
 	/**
 	 * パケット受信

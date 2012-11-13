@@ -1,6 +1,7 @@
 package server.udp;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
@@ -27,14 +28,28 @@ public class ServerUDP extends AbstUDP{
 	
 
 	@Override
-	public void sendPacket() {
-		
+	public void sendPacket(LineRecord lr) {
+		try {
+			for(int i = 0; i < clientAddress.size(); i++){
+				socket.send(recordToSendPacket(lr).get(i));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void receivePacket() {
-		//どこかからパケットを受信したら全クライアントにデータを送信する
+		LineRecord lr = null;
+		try {
+			socket.receive(recvPacket);
+			lr = this.recordFromRecvPacket(recvPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
+		//パケットを受信したら全クライアントにデータを送信する
+		sendPacket(lr);
 	}
 	
 	@Override

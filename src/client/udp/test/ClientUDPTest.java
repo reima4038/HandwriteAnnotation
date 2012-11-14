@@ -40,6 +40,7 @@ public class ClientUDPTest implements Prefs{
 					"expect: " + ClientUDP.BUFSIZE + 
 					", actual: " + cUDP.getBuf().length);
 		}
+		cUDP.close();
 	}
 
 	@Test
@@ -57,6 +58,8 @@ public class ClientUDPTest implements Prefs{
 		if(socket.isClosed()){
 			fail("ソケット開放処理を行いましたが、ソケットが開放されていません.");
 		}
+		cUDP.close();
+
 	}
 	
 	@Test
@@ -71,6 +74,7 @@ public class ClientUDPTest implements Prefs{
 		 * インスタンスを呼び出すことでコンストラクタ内に書かれたソケット開放処理を実行する
 		 */
 		ClientUDP.getInstance().init();
+
 		//ソケットを閉じる
 		ClientUDP.getInstance().close();
 		//ソケットが閉じられているか確認

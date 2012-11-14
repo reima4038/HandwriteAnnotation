@@ -9,48 +9,20 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import common.abst.AbstUDP;
 import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
 import common.util.Utl;
 
-public class ClientUDP implements Runnable, Prefs{
+public class ClientUDP extends AbstUDP{
 
-	private static final int DEFAULT_FPS = 1500;
-	public static final int BUFSIZE = 1024;
 	private static final ClientUDP cUDP = new ClientUDP();
 	
-	private int fps;
-
-	private byte[] buf;
-	private DatagramSocket socket;
-	private DatagramPacket recvPacket;
-
-	public ClientUDP(int fps) {
-		this.fps = fps;
-		init();
-	}
-
-	public ClientUDP() {
-		this(DEFAULT_FPS);
-		
+	private ClientUDP() {
+		super();
 	}
 	
-	/**
-	 * 初期化処理
-	 */
-	public void init(){
-		buf = new byte[BUFSIZE];
-		
-		try {
-			socket = new DatagramSocket(DEFAULT_PORT);
-			recvPacket = new DatagramPacket(buf, BUFSIZE);
-		} catch (SocketException e) {
-			Utl.printlnErr("ソケットの開放に失敗しました.");
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * パケット送信
 	 */
@@ -78,39 +50,17 @@ public class ClientUDP implements Runnable, Prefs{
 		SessionStatus.getInstance().setReceivedLineRecord(lr);
 		
 	}
-
-	/**
-	 * ソケットを閉じる
-	 */
-	public void close() {
-		socket.close();
+	
+	@Override
+	protected void frameUpdate() {
+		//パケットの受信待機
+		receivePacket();		
 	}
-
+	
 	public static ClientUDP getInstance() {
 		return cUDP;
 	}
 
-	@Override
-	public void run() {
-		long lasttime = System.currentTimeMillis();
-		while (true) {
-			//パケットの受信待機
-			receivePacket();
-			
-			long nowtime = System.currentTimeMillis();
-			if (lasttime - nowtime < 1000 / fps) {
-				try {
-					// 割り算の誤差などいろいろ正確ではない
-					Thread.sleep(1000 / fps - (lasttime - nowtime));
-				} catch (InterruptedException e) {
-				}
-			} else {
-				Thread.yield();
-			}
-			lasttime = nowtime;
-		}
-
-	}
 	
 	/**
 	 * ラインレコードを送信用パケットに変換

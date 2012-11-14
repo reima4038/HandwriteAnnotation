@@ -29,4 +29,5 @@ public class LineRecordTest {
 			assertTrue(lRecord.getRecord().size() == 0);
 		}
 	}
+	
 }

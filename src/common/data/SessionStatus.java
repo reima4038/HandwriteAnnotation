@@ -1,6 +1,11 @@
 package common.data;
 
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import common.util.Utl;
 
 /**
  * セッション中の変数を保持するクラス
@@ -9,6 +14,13 @@ import java.util.ArrayList;
 public class SessionStatus {
 
 	private final static SessionStatus sStatus = new SessionStatus();
+	
+	/*
+	 *　for SocketConnection 
+	 */
+	//通信するサーバのIPアドレス
+	private String sIPAddress;
+	private InetAddress sInetAddress;
 	
 	/*
 	 * for HandwriteLayerStatus
@@ -40,6 +52,13 @@ public class SessionStatus {
 	private ArrayList<LineRecord> lineRecords;
 	
 	private SessionStatus(){
+		initValueForHandwriteLayerPanel();
+		initValueForSocket();
+		
+		
+	}
+	
+	private void initValueForHandwriteLayerPanel(){
 		annoNum = 0;
 		drawFlagOwn = false;
 		drawFlagPartner = false;
@@ -48,6 +67,17 @@ public class SessionStatus {
 		latestLineRecord = new LineRecord();
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();
+	}
+	
+	private void initValueForSocket(){
+		try {
+			sInetAddress = InetAddress.getByName(sIPAddress);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
+			Utl.printlnErr("サーバのIPアドレスの初期化処理に失敗しました.\nサーバIPが指定されていません.");
+			e.printStackTrace();
+		}
 	}
 	
 	public static SessionStatus getInstance(){
@@ -72,6 +102,10 @@ public class SessionStatus {
 
 	public boolean getRecordingFlag() {
 		return recordingFlag;
+	}
+	
+	public InetAddress getSInetAddress(){
+		return sInetAddress;
 	}
 
 	public void setLatestLineRecord(LineRecord latestLineRecord) {

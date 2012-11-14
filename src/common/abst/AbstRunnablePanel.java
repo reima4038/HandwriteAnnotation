@@ -1,4 +1,4 @@
-package client.layer;
+package common.abst;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,19 +10,19 @@ import javax.swing.JPanel;
  * @author Reima
  *
  */
-public abstract class AbstLayerPanel extends JPanel implements Runnable{
+public abstract class AbstRunnablePanel extends JPanel implements Runnable{
 
 	// 負荷テストしたい.2000~でほぼ遅延なし
 	private static final int DEFAULT_FPS = 1500;
 
 	int fps;
 	 
-    public AbstLayerPanel(int fps) {
+    public AbstRunnablePanel(int fps) {
         this.fps = fps;
         setIgnoreRepaint(true);
     }
  
-    public AbstLayerPanel() {
+    public AbstRunnablePanel() {
         this(DEFAULT_FPS);
     }
  
@@ -50,7 +50,7 @@ public abstract class AbstLayerPanel extends JPanel implements Runnable{
     	frameRender((Graphics2D)g);
     }
     
-    abstract void frameUpdate(int skipped);
-    abstract void frameRender(Graphics2D g);
+    protected abstract void frameUpdate(int skipped);
+    protected abstract void frameRender(Graphics2D g);
 }
 

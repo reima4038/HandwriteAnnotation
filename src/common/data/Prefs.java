@@ -6,7 +6,7 @@ package common.data;
  */
 public interface Prefs {
 
-	//無指定の際に利用するポート
-	public static final String DEFAULT_PORT = "4038";
+	//利用するポート
+	public static final int DEFAULT_PORT = 4038;
 
 }

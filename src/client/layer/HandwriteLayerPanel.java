@@ -9,16 +9,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import client.udp.ClientUDP;
+
+import common.abst.AbstRunnablePanel;
+import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
-import common.util.Utl;
 
 /**
  * 手書きレイヤの本体
  * 
  * @author Reima
  */
-public class HandwriteLayerPanel extends AbstLayerPanel implements
+public class HandwriteLayerPanel extends AbstRunnablePanel implements
 		MouseListener, MouseMotionListener {
 
 	private static final Dimension PANEL_SIZE = new Dimension(800, 640);
@@ -37,19 +40,24 @@ public class HandwriteLayerPanel extends AbstLayerPanel implements
 		setFocusable(true);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-
-		Thread th = new Thread(this);
-		th.start();
+		
+		//クライアント側のUDP用スレッド
+		Thread udpTh = new Thread(ClientUDP.getInstance());
+		//メインループ用のスレッド
+		Thread mainTh = new Thread(this);
+		
+		udpTh.start();
+		mainTh.start();
 	}
 
 	@Override
-	void frameUpdate(int skipped) {
+	protected void frameUpdate(int skipped) {
 
 		sortHandwriteAnnotation();
 	}
 
 	@Override
-	void frameRender(Graphics2D g) {
+	protected void frameRender(Graphics2D g) {
 		g.setBackground(PANEL_BACKGROUND);
 		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
 		drawHandwriteAnnotation(g);
@@ -163,11 +171,13 @@ public class HandwriteLayerPanel extends AbstLayerPanel implements
 	@Override
 	public void mouseReleased(MouseEvent ev) {
 		SessionStatus ss = SessionStatus.getInstance();
+		LineRecord lr = ss.getLatestLineRecord().clone();
 
 		//最新の注釈をUDPで相手に送信
+		ClientUDP.getInstance().sendPacket(lr);
 		
 		//最新の注釈レコードを統合レコードに移行
-		ss.getLineRecords().add(ss.getLatestLineRecord().clone());
+		ss.getLineRecords().add(lr);
 		
 		//最新の注釈を破棄
 		ss.getLatestLineRecord().initDefaultValue();

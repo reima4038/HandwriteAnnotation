@@ -11,6 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import client.layer.HandwriteLayerFrame;
+
+import common.util.Utl;
+
 public class ClientLancherPanel extends JPanel implements ActionListener{
 	
 	private static final Dimension PANEL_SIZE = new Dimension(190, 110);
@@ -87,8 +91,11 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand() == NAME_BTN_LAUNCH){
-			System.out.println("LaunchButton is Pressed.");
+			Utl.println("LaunchButton is Pressed.");
 			//HandwriteLayer Launch
+			HandwriteLayerFrame.getInstance().setVisible(true);
+			//Controller Launch
+			ControllerFrame.getInstance().setVisible(true);
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
 			System.out.println("EndButton is Pressed.");

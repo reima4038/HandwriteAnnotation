@@ -27,7 +27,7 @@ public abstract class AbstUDP implements Runnable, Prefs{
 	
     public AbstUDP(int fps) {
         this.fps = fps;
-
+        init();
     }
  
     public AbstUDP() {

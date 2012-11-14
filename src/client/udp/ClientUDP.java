@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
+import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -15,14 +15,14 @@ import common.data.Prefs;
 import common.data.SessionStatus;
 import common.util.Utl;
 
-public class ClientUDP extends AbstUDP{
+public class ClientUDP extends AbstUDP {
 
 	private static final ClientUDP cUDP = new ClientUDP();
-	
+
 	private ClientUDP() {
 		super();
 	}
-	
+
 	/**
 	 * パケット送信
 	 */
@@ -40,36 +40,41 @@ public class ClientUDP extends AbstUDP{
 	public void receivePacket() {
 		LineRecord lr = null;
 		try {
+			if (socket == null)
+				Utl.println("socket is null");
+			if (recvPacket == null)
+				Utl.println("recvPacket is null");
 			socket.receive(recvPacket);
 			lr = this.recordFromRecvPacket(recvPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//ラインレコードをセッションステータスの受信したレコードに反映
+
+		// ラインレコードをセッションステータスの受信したレコードに反映
 		SessionStatus.getInstance().setReceivedLineRecord(lr);
-		
+
 	}
-	
+
 	@Override
 	protected void frameUpdate() {
-		//パケットの受信待機
-		receivePacket();		
+		// パケットの受信待機
+		receivePacket();
 	}
-	
+
 	public static ClientUDP getInstance() {
 		return cUDP;
 	}
 
-	
 	/**
 	 * ラインレコードを送信用パケットに変換
+	 * 
 	 * @return
 	 */
 	public DatagramPacket recordToSendPacket(LineRecord lr){
 		DatagramPacket sendPacket;
 		byte[] sendData;
 		ByteBuffer bBuf = ByteBuffer.allocate(8192);
+		
 		//バイトコードの記法を指定
 		bBuf.order(ByteOrder.BIG_ENDIAN);
 		
@@ -84,6 +89,16 @@ public class ClientUDP extends AbstUDP{
 			bBuf.putInt(lr.getRecord().get(i).getLocation().y);
 		}
 		
+		/**
+		 * Debug
+		 */
+//		Utl.println("----------------------------------------------");
+//		Utl.println("byteBuf Position" + bBuf.position());
+//		Utl.println("byteBuf Limit" + bBuf.limit());
+//		Utl.println("byteBuf Capacity" + bBuf.capacity());
+//		Utl.println("----------------------------------------------");
+
+		
 		//送信用データを用意
 		sendData = new byte[bBuf.position()];
 		System.arraycopy(bBuf.array(), 0, sendData, 0, sendData.length);
@@ -95,39 +110,51 @@ public class ClientUDP extends AbstUDP{
 		
 		return sendPacket;
 	}
-	
+
 	/**
 	 * 受信したパケットをラインレコードに変換
+	 * 
 	 * @return
 	 */
-	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket){
+	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket) {
 		LineRecord lr = new LineRecord();
 		byte[] recvData = recvPacket.getData();
-		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
-		//バイトコードの記法はビッグエンディアンに指定
-		bBuf.order(ByteOrder.BIG_ENDIAN);
+		ByteBuffer bBuf = ByteBuffer.allocate(1052);
+		bBuf.put(recvData);
 		
-		//バッファからデータを取り出してLineRecordクラスのメンバに代入
+		// バイトコードの記法はビッグエンディアンに指定
+		bBuf.order(ByteOrder.BIG_ENDIAN);
+
+		// バッファからデータを取り出してLineRecordクラスのメンバに代入
 		lr.setUserID(bBuf.getInt());
 		lr.setColor(bBuf.getInt());
 		lr.setClickTimeStamp(bBuf.getLong());
 		lr.setReleaseTimeStamp(bBuf.getLong());
 		int recordSize = bBuf.getInt();
 		int x, y;
-		for(int i = 0; i < recordSize; i++){
+		for (int i = 0; i < recordSize; i++) {
 			x = bBuf.getInt();
 			y = bBuf.getInt();
 			lr.getRecord().add(new Point(x, y));
 		}
 		
+		/**
+		 * Debug
+		 */
+//		Utl.println("----------------------------------------------");
+//		Utl.println("byteBuf Position" + bBuf.position());
+//		Utl.println("byteBuf Limit" + bBuf.limit());
+//		Utl.println("byteBuf Capacity" + bBuf.capacity());
+//		Utl.println("----------------------------------------------");
+
 		return lr;
 	}
-	
+
 	/*
 	 * getter, setter
 	 */
-	
-	public DatagramSocket getSocket(){
+
+	public DatagramSocket getSocket() {
 		return socket;
 	}
 
@@ -146,5 +173,5 @@ public class ClientUDP extends AbstUDP{
 	public void setRecvPacket(DatagramPacket recvPacket) {
 		this.recvPacket = recvPacket;
 	}
-	
+
 }

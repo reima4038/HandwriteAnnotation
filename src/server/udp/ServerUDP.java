@@ -1,4 +1,4 @@
-package server.only.udp;
+package server.udp;
 
 import java.awt.Point;
 import java.io.IOException;

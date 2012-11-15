@@ -1,4 +1,4 @@
-package server.only.udp.test;
+package server.udp.test;
 
 import static org.junit.Assert.*;
 

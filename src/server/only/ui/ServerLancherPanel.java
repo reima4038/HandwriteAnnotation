@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import server.only.udp.ServerUDP;
+import server.udp.ServerUDP;
 
 import common.util.Utl;
 

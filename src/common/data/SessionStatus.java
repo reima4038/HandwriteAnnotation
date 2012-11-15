@@ -71,7 +71,7 @@ public class SessionStatus {
 	
 	private void initValueForSocket(){
 		try {
-			sInetAddress = InetAddress.getByName(sIPAddress);
+			sInetAddress = InetAddress.getByName(getsIPAddress());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e){
@@ -106,6 +106,14 @@ public class SessionStatus {
 	
 	public InetAddress getSInetAddress(){
 		return sInetAddress;
+	}
+
+	public String getsIPAddress() {
+		return sIPAddress;
+	}
+
+	public void setsIPAddress(String sIPAddress) {
+		this.sIPAddress = sIPAddress;
 	}
 
 	public void setLatestLineRecord(LineRecord latestLineRecord) {

@@ -12,6 +12,7 @@ import common.abst.AbstUDP;
 import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
+import common.util.Utl;
 
 
 public class ServerUDP extends AbstUDP{
@@ -43,6 +44,7 @@ public class ServerUDP extends AbstUDP{
 		LineRecord lr = null;
 		try {
 			socket.receive(recvPacket);
+			Utl.println("パケット受信");
 			lr = this.recordFromRecvPacket(recvPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -58,7 +60,7 @@ public class ServerUDP extends AbstUDP{
 		receivePacket();
 	}
 
-	public ServerUDP getInstance(){
+	public static ServerUDP getInstance(){
 		return sUDP;
 	}
 
@@ -67,6 +69,9 @@ public class ServerUDP extends AbstUDP{
 	 * @return
 	 */
 	public ArrayList<DatagramPacket> recordToSendPacket(LineRecord lr) {
+		Utl.println("ラインレコードを送信用パケットに変換");
+
+		
 		ArrayList<DatagramPacket> sendPackets = new ArrayList<DatagramPacket>();
 		byte[] sendData;
 		ByteBuffer bBuf = ByteBuffer.allocate(8192);
@@ -103,6 +108,8 @@ public class ServerUDP extends AbstUDP{
 	 * @return
 	 */
 	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket) {
+		Utl.println("受信したパケットをラインレコードに変換");
+		
 		LineRecord lr = new LineRecord();
 		byte[] recvData = recvPacket.getData();
 		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
@@ -145,6 +152,7 @@ public class ServerUDP extends AbstUDP{
 	 * クライアントのアドレスにIPを追加
 	 */
 	public void addressAdd(InetAddress ip){
+		Utl.println("ClientIPAddress Added: " + ip);
 		clientAddress.add(ip);
 	}
 	
@@ -152,6 +160,7 @@ public class ServerUDP extends AbstUDP{
 	 * クライアントのアドレスリストを初期化
 	 */
 	public void addressClear(){
+		Utl.println("Clear ClientIPAddress");
 		clientAddress.clear();
 	}
 

@@ -33,6 +33,7 @@ public class ServerUDP extends AbstUDP{
 		try {
 			for(int i = 0; i < clientAddress.size(); i++){
 				socket.send(recordToSendPacket(lr).get(i));
+				Utl.dPrintln("IP:" + clientAddress.get(i).getHostAddress() + " にパケット送信");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -44,7 +45,7 @@ public class ServerUDP extends AbstUDP{
 		LineRecord lr = null;
 		try {
 			socket.receive(recvPacket);
-			Utl.println("パケット受信");
+			Utl.dPrintln("パケット受信");
 			lr = this.recordFromRecvPacket(recvPacket);
 		} catch (IOException e) {
 			e.printStackTrace();

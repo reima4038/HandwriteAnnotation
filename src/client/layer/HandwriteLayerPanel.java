@@ -52,7 +52,6 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 
 	@Override
 	protected void frameUpdate(int skipped) {
-
 		sortHandwriteAnnotation();
 	}
 
@@ -63,6 +62,7 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 		drawHandwriteAnnotation(g);
 		drawStatus(g);
 	}
+	
 
 	/**
 	 * 手書き注釈を格納している配列をタイムスタンプ順にソート 手書き注釈の描画順を正しくする

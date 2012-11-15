@@ -99,7 +99,7 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 			ControllerFrame.getInstance().setVisible(true);
 			//テキストフィールドに入力されたIPをサーバアドレスとして保存
 			Utl.println("ServerAddress: " + tfAddress.getText());
-			SessionStatus.getInstance().setsIPAddress(tfAddress.getText());
+			SessionStatus.getInstance().initValSocket(tfAddress.getText());
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
 			System.out.println("EndButton is Pressed.");

@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 
 import server.udp.ServerUDP;
 
+import common.util.Utl;
+
 public class ServerLancherPanel extends JPanel implements ActionListener{
 	
 	private static final Dimension PANEL_SIZE = new Dimension(190, 110);
@@ -75,13 +77,13 @@ public class ServerLancherPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand() == NAME_BTN_LAUNCH){
-			System.out.println("LaunchButton is Pressed.");
+			Utl.dPrintln("LaunchButton is Pressed.");
 			//UDPexecute
 			Thread sTh = new Thread(ServerUDP.getInstance());
 			sTh.start();
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
-			System.out.println("EndButton is Pressed.");
+			Utl.dPrintln("EndButton is Pressed.");
 			//System out
 			System.exit(0);
 		}

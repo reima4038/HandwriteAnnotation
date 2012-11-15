@@ -27,6 +27,7 @@ public class ClientUDP extends AbstUDP {
 	 * パケット送信
 	 */
 	public void sendPacket(LineRecord lr) {
+		Utl.dPrintln("SendPacket");
 		try {
 			socket.send(recordToSendPacket(lr));
 		} catch (IOException e) {
@@ -40,18 +41,21 @@ public class ClientUDP extends AbstUDP {
 	public void receivePacket() {
 		LineRecord lr = null;
 		try {
-			if (socket == null)
+			if (socket == null){
 				Utl.println("socket is null");
-			if (recvPacket == null)
+			}
+			if (recvPacket == null){
 				Utl.println("recvPacket is null");
+			}
 			socket.receive(recvPacket);
 			lr = this.recordFromRecvPacket(recvPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		// ラインレコードをセッションステータスの受信したレコードに反映
-		SessionStatus.getInstance().setReceivedLineRecord(lr);
+		// 受信したラインレコードをセッションステータスに反映
+//		SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
+		SessionStatus.getInstance().getLineRecords().add(lr);
 
 	}
 
@@ -104,7 +108,10 @@ public class ClientUDP extends AbstUDP {
 		System.arraycopy(bBuf.array(), 0, sendData, 0, sendData.length);
 		
 		//サーバーのアドレスをセッションステータスから取得
+		Utl.dPrintln("PacketPreparating.Sending to: " + SessionStatus.getInstance().getSInetAddress());
 		InetAddress ip = SessionStatus.getInstance().getSInetAddress();
+
+		
 		//送信用データ、アドレス、ポートの情報を元に送信用パケットを用意
 		sendPacket = new DatagramPacket(sendData, sendData.length, ip, Prefs.DEFAULT_PORT);
 		

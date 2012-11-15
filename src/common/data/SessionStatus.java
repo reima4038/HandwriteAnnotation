@@ -19,7 +19,6 @@ public class SessionStatus {
 	 *　for SocketConnection 
 	 */
 	//通信するサーバのIPアドレス
-	private String sIPAddress;
 	private InetAddress sInetAddress;
 	
 	/*
@@ -52,13 +51,10 @@ public class SessionStatus {
 	private ArrayList<LineRecord> lineRecords;
 	
 	private SessionStatus(){
-		initValueForHandwriteLayerPanel();
-		initValueForSocket();
-		
-		
+		initValLayerPanel();
 	}
 	
-	private void initValueForHandwriteLayerPanel(){
+	private void initValLayerPanel(){
 		annoNum = 0;
 		drawFlagOwn = false;
 		drawFlagPartner = false;
@@ -69,9 +65,9 @@ public class SessionStatus {
 		lineRecords = new ArrayList<LineRecord>();
 	}
 	
-	private void initValueForSocket(){
+	public void initValSocket(String sIPAddress){
 		try {
-			sInetAddress = InetAddress.getByName(getsIPAddress());
+			sInetAddress = InetAddress.getByName(sIPAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e){
@@ -106,14 +102,6 @@ public class SessionStatus {
 	
 	public InetAddress getSInetAddress(){
 		return sInetAddress;
-	}
-
-	public String getsIPAddress() {
-		return sIPAddress;
-	}
-
-	public void setsIPAddress(String sIPAddress) {
-		this.sIPAddress = sIPAddress;
 	}
 
 	public void setLatestLineRecord(LineRecord latestLineRecord) {

@@ -9,7 +9,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import server.udp.ServerUDP;
 
 public class ServerLancherPanel extends JPanel implements ActionListener{
 	
@@ -75,7 +76,9 @@ public class ServerLancherPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand() == NAME_BTN_LAUNCH){
 			System.out.println("LaunchButton is Pressed.");
-			//HandwriteLayer Launch
+			//UDPexecute
+			Thread sTh = new Thread(ServerUDP.getInstance());
+			sTh.start();
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
 			System.out.println("EndButton is Pressed.");

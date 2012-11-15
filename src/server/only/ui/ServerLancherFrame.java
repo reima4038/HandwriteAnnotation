@@ -1,4 +1,4 @@
-package server.ui;
+package server.only.ui;
 
 import java.awt.BorderLayout;
 

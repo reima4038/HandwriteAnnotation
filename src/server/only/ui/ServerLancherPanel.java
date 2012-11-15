@@ -1,4 +1,4 @@
-package server.ui;
+package server.only.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import server.udp.ServerUDP;
+import server.only.udp.ServerUDP;
 
 import common.util.Utl;
 

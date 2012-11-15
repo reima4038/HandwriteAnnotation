@@ -1,11 +1,11 @@
-package server.test;
+package server.only.test;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import server.ui.ServerLancherFrame;
-import server.ui.ServerLancherPanel;
+import server.only.ui.ServerLancherFrame;
+import server.only.ui.ServerLancherPanel;
 
 public class ServerLauncherUITest {
 

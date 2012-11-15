@@ -12,6 +12,7 @@ import common.abst.AbstUDP;
 import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
+import common.util.Utl;
 
 
 public class ServerUDP extends AbstUDP{
@@ -32,6 +33,7 @@ public class ServerUDP extends AbstUDP{
 		try {
 			for(int i = 0; i < clientAddress.size(); i++){
 				socket.send(recordToSendPacket(lr).get(i));
+				Utl.dPrintln("IP:" + clientAddress.get(i).getHostAddress() + " にパケット送信");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,6 +45,7 @@ public class ServerUDP extends AbstUDP{
 		LineRecord lr = null;
 		try {
 			socket.receive(recvPacket);
+			Utl.dPrintln("パケット受信");
 			lr = this.recordFromRecvPacket(recvPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -58,7 +61,7 @@ public class ServerUDP extends AbstUDP{
 		receivePacket();
 	}
 
-	public ServerUDP getInstance(){
+	public static ServerUDP getInstance(){
 		return sUDP;
 	}
 
@@ -67,6 +70,9 @@ public class ServerUDP extends AbstUDP{
 	 * @return
 	 */
 	public ArrayList<DatagramPacket> recordToSendPacket(LineRecord lr) {
+		Utl.dPrintln("ラインレコードを送信用パケットに変換");
+
+		
 		ArrayList<DatagramPacket> sendPackets = new ArrayList<DatagramPacket>();
 		byte[] sendData;
 		ByteBuffer bBuf = ByteBuffer.allocate(8192);
@@ -103,6 +109,8 @@ public class ServerUDP extends AbstUDP{
 	 * @return
 	 */
 	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket) {
+		Utl.dPrintln("受信したパケットをラインレコードに変換");
+		
 		LineRecord lr = new LineRecord();
 		byte[] recvData = recvPacket.getData();
 		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
@@ -123,6 +131,7 @@ public class ServerUDP extends AbstUDP{
 		
 		//パケットを受信したらそのクライアントのIPを保存する
 		if(!isExistAddress(recvPacket.getAddress())){
+			Utl.dPrintln("クライアントのIPを保存:　" + recvPacket.getAddress());
 			clientAddress.add(recvPacket.getAddress());
 		}
 		
@@ -133,11 +142,14 @@ public class ServerUDP extends AbstUDP{
 	 * 指定したアドレスが既にクライアントアドレスのリストに存在するか判断する
 	 */
 	private boolean isExistAddress(InetAddress ip){
+		Utl.dPrintln("クライアントのIPがアドレスリストに存在するか確認");
 		for(int i = 0; i < clientAddress.size(); i++){
 			if(recvPacket.getAddress() == clientAddress.get(i)){
+				Utl.dPrintln("アドレスリストの中に" + recvPacket.getAddress() + "を発見しました。");
 				return true;
 			}
 		}
+		Utl.dPrintln("アドレスリストの中に" + recvPacket.getAddress() + "は有りませんでした");
 		return false;
 	}
 	
@@ -145,6 +157,7 @@ public class ServerUDP extends AbstUDP{
 	 * クライアントのアドレスにIPを追加
 	 */
 	public void addressAdd(InetAddress ip){
+		Utl.dPrintln("ClientIPAddress Added: " + ip);
 		clientAddress.add(ip);
 	}
 	
@@ -152,6 +165,7 @@ public class ServerUDP extends AbstUDP{
 	 * クライアントのアドレスリストを初期化
 	 */
 	public void addressClear(){
+		Utl.dPrintln("Clear ClientIPAddress");
 		clientAddress.clear();
 	}
 

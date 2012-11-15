@@ -9,7 +9,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import server.udp.ServerUDP;
+
+import common.util.Utl;
 
 public class ServerLancherPanel extends JPanel implements ActionListener{
 	
@@ -74,11 +77,13 @@ public class ServerLancherPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand() == NAME_BTN_LAUNCH){
-			System.out.println("LaunchButton is Pressed.");
-			//HandwriteLayer Launch
+			Utl.dPrintln("LaunchButton is Pressed.");
+			//UDPexecute
+			Thread sTh = new Thread(ServerUDP.getInstance());
+			sTh.start();
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
-			System.out.println("EndButton is Pressed.");
+			Utl.dPrintln("EndButton is Pressed.");
 			//System out
 			System.exit(0);
 		}

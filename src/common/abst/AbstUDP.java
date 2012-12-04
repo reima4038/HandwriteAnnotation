@@ -14,8 +14,7 @@ import common.util.Utl;
 public abstract class AbstUDP implements Runnable, Prefs{
 	
 	// 負荷テストしたい.2000~でほぼ遅延なし
-	private static final int DEFAULT_FPS = 1500;
-	public static final int BUFSIZE = 1024;
+	private static final int THREAD_SLEEP = 500;
 
 	private int fps;
 	
@@ -29,7 +28,7 @@ public abstract class AbstUDP implements Runnable, Prefs{
     }
  
     public AbstUDP() {
-        this(DEFAULT_FPS);
+        this(THREAD_SLEEP);
     }
 
 	public void init(){
@@ -56,7 +55,7 @@ public abstract class AbstUDP implements Runnable, Prefs{
 	 * @return
 	 */
 	public ByteBuffer transLineRecordToByteBuffer(LineRecord lr){
-		ByteBuffer bBuf = ByteBuffer.allocate(8192);
+		ByteBuffer bBuf = ByteBuffer.allocate(BUFSIZE);
 		
 		//バイトコードの記法を指定
 		bBuf.order(ByteOrder.BIG_ENDIAN);
@@ -141,21 +140,13 @@ public abstract class AbstUDP implements Runnable, Prefs{
 
 	
 	public void run() {
-		long lasttime = System.currentTimeMillis();
 		while (true) {
 			frameUpdate();
-			
-			long nowtime = System.currentTimeMillis();
-			if (lasttime - nowtime < 1000 / fps) {
-				try {
-					// 割り算の誤差などいろいろ正確ではない
-					Thread.sleep(1000 / fps - (lasttime - nowtime));
-				} catch (InterruptedException e) {
-				}
-			} else {
-				Thread.yield();
+			try {
+				Thread.sleep(THREAD_SLEEP);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			lasttime = nowtime;
 		}
 
 	}

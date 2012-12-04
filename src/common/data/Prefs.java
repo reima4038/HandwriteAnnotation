@@ -8,5 +8,9 @@ public interface Prefs {
 
 	//利用するポート
 	public static final int DEFAULT_PORT = 4038;
+	
+	//通信するパケットのサイズ
+	public static final int BUFSIZE = 8192;
+
 
 }

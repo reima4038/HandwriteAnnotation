@@ -6,21 +6,21 @@ import javax.swing.JFrame;
 
 import server.only.ui.ServerLancherPanel;
 
-public class ServerLancherIntegratedFrame extends JFrame{
+public class IntegratedServerLancherFrame extends JFrame{
 	
 	private static final String SERVER_LANCHR_INTEGRATED_TITLE = "ServerLancherIntegrated";
-	private static final ServerLancherIntegratedFrame sliFrame = new ServerLancherIntegratedFrame();
+	private static final IntegratedServerLancherFrame sliFrame = new IntegratedServerLancherFrame();
 	
-	private ServerLancherIntegratedFrame(){
+	private IntegratedServerLancherFrame(){
 		setTitle(SERVER_LANCHR_INTEGRATED_TITLE);
 		setResizable(false);
-		ServerLancherIntegratedPanel sliPanel = ServerLancherIntegratedPanel.getInstance();
+		IntegratedServerLancherPanel sliPanel = IntegratedServerLancherPanel.getInstance();
 		getContentPane().add(sliPanel, BorderLayout.CENTER);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public static ServerLancherIntegratedFrame getInstance(){
+	public static IntegratedServerLancherFrame getInstance(){
 		return sliFrame;
 	}
 	

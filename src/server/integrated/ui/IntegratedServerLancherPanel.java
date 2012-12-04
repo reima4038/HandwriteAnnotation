@@ -14,7 +14,7 @@ import server.layer.IntegratedHandwriteLayerFrame;
 
 import common.util.Utl;
 
-public class ServerLancherIntegratedPanel extends JPanel implements
+public class IntegratedServerLancherPanel extends JPanel implements
 		ActionListener {
 
 	private static final Dimension PANEL_SIZE = new Dimension(190, 110);
@@ -32,12 +32,12 @@ public class ServerLancherIntegratedPanel extends JPanel implements
 	private static final Point P_BTN_LAUNCH = new Point(10, 70);
 	private static final Point P_BTN_END = new Point(100, 70);
 
-	private static final ServerLancherIntegratedPanel sliPanel = new ServerLancherIntegratedPanel();
+	private static final IntegratedServerLancherPanel sliPanel = new IntegratedServerLancherPanel();
 
 	private JButton bLaunch;
 	private JButton bEnd;
 
-	private ServerLancherIntegratedPanel() {
+	private IntegratedServerLancherPanel() {
 		setPreferredSize(PANEL_SIZE);
 		setLayout(null);
 		setBackground(PANEL_BACKGROUND);
@@ -65,7 +65,7 @@ public class ServerLancherIntegratedPanel extends JPanel implements
 		this.add(bEnd);
 	}
 
-	public static ServerLancherIntegratedPanel getInstance() {
+	public static IntegratedServerLancherPanel getInstance() {
 		return sliPanel;
 	}
 

@@ -15,6 +15,7 @@ import common.abst.AbstRunnablePanel;
 import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
+import common.util.Utl;
 
 /**
  * 手書きレイヤの本体
@@ -50,6 +51,7 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 		mainTh.start();
 	}
 
+
 	@Override
 	protected void frameUpdate(int skipped) {
 		sortHandwriteAnnotation();
@@ -57,6 +59,7 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 
 	@Override
 	protected void frameRender(Graphics2D g) {
+		
 		g.setBackground(PANEL_BACKGROUND);
 		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
 		drawHandwriteAnnotation(g);

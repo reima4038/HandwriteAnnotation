@@ -47,16 +47,20 @@ public class ClientUDP extends AbstUDP {
 			if (recvPacket == null){
 				Utl.println("recvPacket is null");
 			}
+			Utl.dPrintln("パケット受信待機");
 			socket.receive(recvPacket);
+			
+			Utl.dPrintln("パケット受信");
 			lr = this.recordFromRecvPacket(recvPacket);
+			lr.show();
+
+			// 受信したラインレコードをセッションステータスに反映
+//			SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
+			Utl.dPrintln("受信したラインレコードをセッションステータスに反映");
+			SessionStatus.getInstance().getLineRecords().add(lr);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// 受信したラインレコードをセッションステータスに反映
-//		SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
-		SessionStatus.getInstance().getLineRecords().add(lr);
-
 	}
 
 	@Override
@@ -126,8 +130,7 @@ public class ClientUDP extends AbstUDP {
 	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket) {
 		LineRecord lr = new LineRecord();
 		byte[] recvData = recvPacket.getData();
-		ByteBuffer bBuf = ByteBuffer.allocate(1052);
-		bBuf.put(recvData);
+		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
 		
 		// バイトコードの記法はビッグエンディアンに指定
 		bBuf.order(ByteOrder.BIG_ENDIAN);
@@ -142,6 +145,7 @@ public class ClientUDP extends AbstUDP {
 		for (int i = 0; i < recordSize; i++) {
 			x = bBuf.getInt();
 			y = bBuf.getInt();
+			
 			lr.getRecord().add(new Point(x, y));
 		}
 		

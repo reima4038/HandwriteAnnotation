@@ -54,7 +54,7 @@ public class IntegratedHandwriteLayerPanel extends AbstRunnablePanel implements
 	
 	@Override
 	protected void frameUpdate(int skipped) {
-		//for Debug:現在描画中のレインレコードの数
+		//for Debug:現在描画中のラインレコードの数
 //		Utl.dPrintln("lineRecords:" + SessionStatus.getInstance().getLineRecords().size());
 	}
 

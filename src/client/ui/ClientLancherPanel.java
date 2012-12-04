@@ -93,13 +93,14 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand() == NAME_BTN_LAUNCH){
 			Utl.println("LaunchButton is Pressed.");
+			//テキストフィールドに入力されたIPをサーバアドレスとして保存
+			Utl.println("ServerAddress: " + tfAddress.getText());
+			SessionStatus.getInstance().initValSocket(tfAddress.getText());
 			//HandwriteLayer Launch
 			HandwriteLayerFrame.getInstance().setVisible(true);
 			//Controller Launch
 			ControllerFrame.getInstance().setVisible(true);
-			//テキストフィールドに入力されたIPをサーバアドレスとして保存
-			Utl.println("ServerAddress: " + tfAddress.getText());
-			SessionStatus.getInstance().initValSocket(tfAddress.getText());
+
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
 			System.out.println("EndButton is Pressed.");

@@ -49,9 +49,10 @@ public class ClientUDP extends AbstUDP {
 			}
 			Utl.dPrintln("パケット受信待機");
 			socket.receive(recvPacket);
-			
 			Utl.dPrintln("パケット受信");
-			lr = this.recordFromRecvPacket(recvPacket);
+			
+			//受信したパケットをラインレコードに変換
+			lr = transPacketToLineRecord(recvPacket);
 			lr.show();
 
 			// 受信したラインレコードをセッションステータスに反映
@@ -81,31 +82,8 @@ public class ClientUDP extends AbstUDP {
 	public DatagramPacket recordToSendPacket(LineRecord lr){
 		DatagramPacket sendPacket;
 		byte[] sendData;
-		ByteBuffer bBuf = ByteBuffer.allocate(8192);
-		
-		//バイトコードの記法を指定
-		bBuf.order(ByteOrder.BIG_ENDIAN);
-		
-		//送信用データをバッファに設定
-		bBuf.putInt(lr.getUserID());
-		bBuf.putInt(lr.getColor());
-		bBuf.putLong(lr.getClickTimeStamp());
-		bBuf.putLong(lr.getReleaseTimeStamp());
-		bBuf.putInt(lr.getRecord().size());
-		for(int i = 0; i < lr.getRecord().size(); i++){
-			bBuf.putInt(lr.getRecord().get(i).getLocation().x);
-			bBuf.putInt(lr.getRecord().get(i).getLocation().y);
-		}
-		
-		/**
-		 * Debug
-		 */
-//		Utl.println("----------------------------------------------");
-//		Utl.println("byteBuf Position" + bBuf.position());
-//		Utl.println("byteBuf Limit" + bBuf.limit());
-//		Utl.println("byteBuf Capacity" + bBuf.capacity());
-//		Utl.println("----------------------------------------------");
-
+		//ラインレコードをByteBuffer型に変換
+		ByteBuffer bBuf = transLineRecordToByteBuffer(lr);
 		
 		//送信用データを用意
 		sendData = new byte[bBuf.position()];
@@ -122,44 +100,6 @@ public class ClientUDP extends AbstUDP {
 		return sendPacket;
 	}
 
-	/**
-	 * 受信したパケットをラインレコードに変換
-	 * 
-	 * @return
-	 */
-	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket) {
-		LineRecord lr = new LineRecord();
-		byte[] recvData = recvPacket.getData();
-		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
-		
-		// バイトコードの記法はビッグエンディアンに指定
-		bBuf.order(ByteOrder.BIG_ENDIAN);
-
-		// バッファからデータを取り出してLineRecordクラスのメンバに代入
-		lr.setUserID(bBuf.getInt());
-		lr.setColor(bBuf.getInt());
-		lr.setClickTimeStamp(bBuf.getLong());
-		lr.setReleaseTimeStamp(bBuf.getLong());
-		int recordSize = bBuf.getInt();
-		int x, y;
-		for (int i = 0; i < recordSize; i++) {
-			x = bBuf.getInt();
-			y = bBuf.getInt();
-			
-			lr.getRecord().add(new Point(x, y));
-		}
-		
-		/**
-		 * Debug
-		 */
-//		Utl.println("----------------------------------------------");
-//		Utl.println("byteBuf Position" + bBuf.position());
-//		Utl.println("byteBuf Limit" + bBuf.limit());
-//		Utl.println("byteBuf Capacity" + bBuf.capacity());
-//		Utl.println("----------------------------------------------");
-
-		return lr;
-	}
 
 	/*
 	 * getter, setter

@@ -44,9 +44,13 @@ public class ServerUDP extends AbstUDP{
 	public void receivePacket() {
 		LineRecord lr = null;
 		try {
+			Utl.dPrintln("パケット受信待機中");
 			socket.receive(recvPacket);
 			Utl.dPrintln("パケット受信");
-			lr = this.recordFromRecvPacket(recvPacket);
+			//受信したパケットをラインレコードに変換
+			lr = transPacketToLineRecord(recvPacket);
+			//パケットを受信したらそのクライアントのIPを保存する
+			preserveIP(recvPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,22 +75,11 @@ public class ServerUDP extends AbstUDP{
 	 */
 	public ArrayList<DatagramPacket> recordToSendPacket(LineRecord lr) {
 		Utl.dPrintln("ラインレコードを送信用パケットに変換");
-
 		
 		ArrayList<DatagramPacket> sendPackets = new ArrayList<DatagramPacket>();
 		byte[] sendData;
-		ByteBuffer bBuf = ByteBuffer.allocate(8192);
-		bBuf.order(ByteOrder.BIG_ENDIAN);
-
-		bBuf.putInt(lr.getUserID());
-		bBuf.putInt(lr.getColor());
-		bBuf.putLong(lr.getClickTimeStamp());
-		bBuf.putLong(lr.getReleaseTimeStamp());
-		bBuf.putInt(lr.getRecord().size());
-		for (int i = 0; i < lr.getRecord().size(); i++) {
-			bBuf.putInt(lr.getRecord().get(i).getLocation().x);
-			bBuf.putInt(lr.getRecord().get(i).getLocation().y);
-		}
+		//ラインレコードをByteBuffer型に変換
+		ByteBuffer bBuf = transLineRecordToByteBuffer(lr);
 
 		sendData = new byte[bBuf.position()];
 		System.arraycopy(bBuf.array(), 0, sendData, 0, sendData.length);
@@ -102,43 +95,15 @@ public class ServerUDP extends AbstUDP{
 		return sendPackets;
 	}
 	
+	
 	/**
-	 * 受信したパケットをラインレコードに変換
-	 * 
-	 * @return
+	 * パケット送信元のIPを保存する
 	 */
-	public LineRecord recordFromRecvPacket(DatagramPacket recvPacket) {
-		Utl.dPrintln("受信したパケットをラインレコードに変換");
-		
-		LineRecord lr = new LineRecord();
-		byte[] recvData = recvPacket.getData();
-		ByteBuffer bBuf = ByteBuffer.wrap(recvData);
-
-
-		// バイトコードの記法はビッグエンディアンに指定
-		bBuf.order(ByteOrder.BIG_ENDIAN);
-
-		// バッファからデータを取り出してLineRecordクラスのメンバに代入
-		lr.setUserID(bBuf.getInt());
-		lr.setColor(bBuf.getInt());
-		lr.setClickTimeStamp(bBuf.getLong());
-		lr.setReleaseTimeStamp(bBuf.getLong());
-
-		int recordSize = bBuf.getInt();
-		int x, y;
-		for (int i = 0; i < recordSize; i++) {
-			x = bBuf.getInt();
-			y = bBuf.getInt();
-			lr.getRecord().add(new Point(x, y));
-		}
-		
-		//パケットを受信したらそのクライアントのIPを保存する
+	private void preserveIP(DatagramPacket recvPacket){
 		if(!isExistAddress(recvPacket.getAddress())){
 			Utl.dPrintln("クライアントのIPを保存:　" + recvPacket.getAddress());
 			clientAddresses.add(recvPacket.getAddress());
 		}
-		
-		return lr;
 	}
 	
 	/**

@@ -3,6 +3,8 @@ package common.data;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import common.util.Utl;
+
 /**
  * 手書き注釈付記における一回のアクション（クリック、ドラッグ、リリース）間の情報を格納するクラス
  * 
@@ -57,7 +59,24 @@ public class LineRecord {
 	public LineRecord clone(){
 		return new LineRecord(userID, color, clickTimeStamp, releaseTimeStamp, (ArrayList<Point>) record.clone());
 	}
-
+	
+	/**
+	 * レコードの内容をコンソールに表示する
+	 * @return
+	 */
+	public void show(){
+		Utl.dPrintln("/*--------Record Data-------*/");
+		Utl.dPrintln("userID: " + userID);
+		Utl.dPrintln("color: " + color);
+		Utl.dPrintln("clickTimeStamp: " + clickTimeStamp);
+		Utl.dPrintln("releaseTimeStamp: " + releaseTimeStamp);
+		for(int i = 0; i < record.size(); i++){
+			Utl.dPrintln("point" + i + ": " + record.get(i).x + "/" + record.get(i).y);
+		}
+		Utl.dPrintln("/*--------------------------*/");
+	}
+	
+	
 	/*
 	 * getter, setter
 	 */

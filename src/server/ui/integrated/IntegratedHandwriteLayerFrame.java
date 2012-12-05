@@ -1,4 +1,4 @@
-package client.layer;
+package server.ui.integrated;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,11 +6,14 @@ import java.awt.IllegalComponentStateException;
 
 import javax.swing.JFrame;
 
-public class HandwriteLayerFrame extends JFrame {
 
-	private static final HandwriteLayerFrame hlFrame = new HandwriteLayerFrame();
+import client.ui.HandwriteLayerFrame;
+import client.ui.HandwriteLayerPanel;
 
-	private HandwriteLayerFrame() {
+public class IntegratedHandwriteLayerFrame extends JFrame{
+	private static final IntegratedHandwriteLayerFrame ihlFrame = new IntegratedHandwriteLayerFrame();
+
+	private IntegratedHandwriteLayerFrame() {
 		try {
 			// タイトルバーを隠す
 			setUndecorated(true);
@@ -23,13 +26,13 @@ public class HandwriteLayerFrame extends JFrame {
 		setAlwaysOnTop(true);
 		setResizable(false);
 
-		HandwriteLayerPanel hlPanel = HandwriteLayerPanel.getInstance();
-		getContentPane().add(hlPanel, BorderLayout.CENTER);
+		IntegratedHandwriteLayerPanel ihlPanel = IntegratedHandwriteLayerPanel.getInstance();
+		getContentPane().add(ihlPanel, BorderLayout.CENTER);
 		pack();
 	}
 
-	public static HandwriteLayerFrame getInstance() {
-		return hlFrame;
+	public static IntegratedHandwriteLayerFrame getInstance() {
+		return ihlFrame;
 	}
 	
 	public static void main (String[] args){

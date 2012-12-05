@@ -28,7 +28,7 @@ public abstract class AbstRunnablePanel extends JPanel implements Runnable{
  
     public void run() {
         long lasttime = System.currentTimeMillis();
-        for(;;) {
+        while(true) {
             frameUpdate(0); // 1フレーム進める
             repaint(); // 描画する
             long nowtime = System.currentTimeMillis();

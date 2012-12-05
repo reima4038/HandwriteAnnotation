@@ -15,6 +15,7 @@ import common.abst.AbstHandwriteLayerPanel;
 import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
+import common.util.Utl;
 
 public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 

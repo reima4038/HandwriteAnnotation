@@ -34,8 +34,10 @@ public class IntegratedServerUDP extends AbstUDP {
 		try {
 			socket.send(recordToSendPacket(lr));
 			Utl.dPrintln("IP:" + clientAddress.getHostAddress() + " にパケット送信");
-
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
+			Utl.printlnErr("パケット送信先が見つかりません.");
 			e.printStackTrace();
 		}
 	}

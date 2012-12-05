@@ -13,7 +13,7 @@ import common.util.Utl;
 
 public abstract class AbstUDP implements Runnable, Prefs{
 	
-	// 負荷テストしたい.2000~でほぼ遅延なし
+	//スレッドスリープ
 	private static final int THREAD_SLEEP = 500;
 
 	private int fps;

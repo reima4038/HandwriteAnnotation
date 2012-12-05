@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import common.data.SessionStatus;
+import common.util.FileOutput;
+
 /**
  * クライアント側で操作するアプリケーションのコントローラ
  * @author Reima
@@ -158,7 +161,8 @@ public class ControllerPanel extends JPanel implements ActionListener{
 			
 		}else if(ev.getActionCommand() == NAME_BTN_LEXPORT){
 			System.out.println("Button:LogExport is Pressed.");
-			
+			//ログの書き込み
+			FileOutput.output(SessionStatus.getInstance().getLineRecords());
 		}
 	}
 }

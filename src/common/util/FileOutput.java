@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
+import common.data.LineRecord;
 import common.data.Prefs;
 
 public class FileOutput implements Prefs{
@@ -20,10 +21,15 @@ public class FileOutput implements Prefs{
 	 * デフォルト名でファイルへ書き込み
 	 * @param text
 	 */
-	public static void output(ArrayList<String[]> text){
+	public static void output(ArrayList<LineRecord> lrs){
+		Utl.dPrintln("ログのファイル書き込み開始");
 		try {
+			Utl.dPrintln("出力ファイル名: " + LOG_FILE_NAME);
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(LOG_FILE_NAME))));
-			CSVWriter writer = setData(text, pw);
+			CSVWriter writer = new CSVWriter(pw);
+			for(int i = 0; i < lrs.size(); i++){
+				writer.writeNext(formatLineRecordToWritableData(lrs.get(i)));
+			}
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -31,31 +37,27 @@ public class FileOutput implements Prefs{
 	}
 	
 	/**
-	 * ファイルへの書き込み
-	 * @param fileName
-	 * @param text
-	 */
-	public static void output(String fileName, ArrayList<String[]> text){
-		try {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(fileName))));
-			CSVWriter writer = setData(text, pw);
-			writer.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * データのセット
-	 * @param text
-	 * @param pw
+	 * ラインレコードをCSVWriterで書き込み可能なString[]に変換
+	 * @param lr
 	 * @return
 	 */
-	private static CSVWriter setData(ArrayList<String[]> text, PrintWriter pw) {
-		CSVWriter writer = new CSVWriter(pw);
-		for(int i = 0; i < text.size(); i++){
-			writer.writeNext(text.get(i));
+	private static String[] formatLineRecordToWritableData(LineRecord lr){
+		Utl.dPrintln("ラインレコードをCSVWriterで書き込み可能な形式に変換");
+		
+		//配列の大きさはLineRecordのメンバ変数の数と描画点の数のの合計
+		String[] data = new String[4 + lr.getRecord().size()];
+		
+		data[0] = String.valueOf(lr.getUserID());
+		data[1] = String.valueOf(lr.getColor());
+		data[2] = String.valueOf(lr.getClickTimeStamp());
+		data[3] = String.valueOf(lr.getReleaseTimeStamp());
+		for(int i = 0; i < lr.getRecord().size(); i++){
+			data[4 + i] = lr.getRecord().get(i).x + "," + lr.getRecord().get(i).y; 
 		}
-		return writer;
+		
+		Utl.dPrintln(data.toString());
+		
+		return data;
 	}
+	
 }

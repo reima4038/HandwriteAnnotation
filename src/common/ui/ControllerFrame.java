@@ -1,8 +1,9 @@
-package client.ui;
+package common.ui;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+
 
 /**
  * クライアント側で操作するアプリケーションのコントローラのフレーム

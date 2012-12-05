@@ -12,5 +12,7 @@ public interface Prefs {
 	//通信するパケットのサイズ
 	public static final int BUFSIZE = 8192;
 
+	//ログファイル名
+	public static final String LOG_FILE_NAME = "logfile";
 
 }

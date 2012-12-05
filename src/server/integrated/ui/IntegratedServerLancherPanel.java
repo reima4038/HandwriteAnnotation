@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import server.layer.IntegratedHandwriteLayerFrame;
 
+import common.ui.ControllerFrame;
 import common.util.Utl;
 
 public class IntegratedServerLancherPanel extends JPanel implements
@@ -82,6 +83,8 @@ public class IntegratedServerLancherPanel extends JPanel implements
 			Utl.dPrintln("LaunchButton is Pressed.");
 			//HandwriteLayer Launch
 			IntegratedHandwriteLayerFrame.getInstance().setVisible(true);
+			//Controller Launch
+			ControllerFrame.getInstance().setVisible(true);
 
 		} else if (ev.getActionCommand() == NAME_BTN_END) {
 			Utl.dPrintln("EndButton is Pressed.");

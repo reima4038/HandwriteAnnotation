@@ -98,14 +98,30 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 	 * 手書き注釈レイヤ上に手書き注釈を描画する
 	 */
 	private void drawHandwriteAnnotation(Graphics g) {
-		SessionStatus ss = SessionStatus.getInstance();
-		Point p = null;
-		Point pp = null; //prev point
-
-		// 色の指定
-		g.setColor(Color.black);
-
+		// 描画色の指定
+		setLineColor(g);
 		// 最新の注釈を描画
+		drawLatestRecord(g);
+		 //履歴の注釈を全て描画
+		drawLineRecords(g);
+	}
+
+	/**
+	 * 描画色の設定
+	 * @param g
+	 */
+	private void setLineColor(Graphics g) {
+		g.setColor(Color.black);
+	}
+	
+	/**
+	 * 最新の注釈を描画
+	 * @param g
+	 */
+	private void drawLatestRecord(Graphics g) {
+		SessionStatus ss = SessionStatus.getInstance();
+		Point p;
+		Point pp;
 		for (int i = 0; i < ss.getLatestLineRecord().getRecord().size(); i++) {
 			/*
 			 * 点と点の隙間を無くすため、最初の一点は指定座標に点を打つ
@@ -118,15 +134,20 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 			else if(i >= 1){
 				p = ss.getLatestLineRecord().getRecord().get(i).getLocation();
 				pp = ss.getLatestLineRecord().getRecord().get(i - 1).getLocation(); 
-				
 				//太さの分だけy座標をずらしつつ線描
-				for(int j = 0; j < DRAW_LINE_BOLD; j++){
-					g.drawLine(p.x + j, p.y + j, pp.x + j, pp.y + j);
-				}
+				lineDrawing(g, p, pp);
 			}
 		}
+	}
 
-		 //履歴の注釈を全て描画
+	/**
+	 * 履歴の注釈を全て描画
+	 * @param g
+	 */
+	private void drawLineRecords(Graphics g) {
+		SessionStatus ss = SessionStatus.getInstance();
+		Point p;
+		Point pp;
 		for(int i = 0; i < ss.getLineRecords().size(); i++){
 			for(int j = 0; j < ss.getLineRecords().get(i).getRecord().size(); j++){
 				if(j == 0){
@@ -137,15 +158,44 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 					p = ss.getLineRecords().get(i).getRecord().get(j).getLocation();
 					pp = ss.getLineRecords().get(i).getRecord().get(j - 1).getLocation();
 					//太さの分だけy座標をずらしつつ線描
-					for(int k = 0; k < DRAW_LINE_BOLD; k++){
-						g.drawLine(p.x + k, p.y + k, pp.x + k, pp.y + k);
-					}
+					lineDrawing(g, p, pp);
 				}
 			}
-			
 		}
-		
 	}
+	
+	/**
+	 * 太さの分だけy座標をずらしつつ線描
+	 * @param g
+	 * @param p
+	 * @param pp
+	 */
+	private void lineDrawing(Graphics g, Point p, Point pp) {
+		for(int i = 0; i < DRAW_LINE_BOLD; i++){
+			g.drawLine(p.x + i, p.y + i, pp.x + i, pp.y + i);
+		}
+	}
+	
+	/**
+	 * マウスリリース後の最新の手書き注釈に関する処理
+	 * ・相手に注釈データを送信
+	 * ・最新注釈を統合レコードに移行
+	 * ・最新注釈を初期化
+	 */
+	private void latestLineRecordProccess() {
+		SessionStatus ss = SessionStatus.getInstance();
+		LineRecord lr = ss.getLatestLineRecord().clone();
+
+		//最新の注釈をUDPで相手に送信
+		ClientUDP.getInstance().sendPacket(lr);
+		
+		//最新の注釈レコードを統合レコードに移行
+		ss.getLineRecords().add(lr);
+		
+		//最新の注釈を破棄
+		ss.getLatestLineRecord().initDefaultValue();
+	}
+
 
 	public static HandwriteLayerPanel getInstance() {
 		return hlPanel;
@@ -173,17 +223,8 @@ public class HandwriteLayerPanel extends AbstRunnablePanel implements
 
 	@Override
 	public void mouseReleased(MouseEvent ev) {
-		SessionStatus ss = SessionStatus.getInstance();
-		LineRecord lr = ss.getLatestLineRecord().clone();
-
-		//最新の注釈をUDPで相手に送信
-		ClientUDP.getInstance().sendPacket(lr);
-		
-		//最新の注釈レコードを統合レコードに移行
-		ss.getLineRecords().add(lr);
-		
-		//最新の注釈を破棄
-		ss.getLatestLineRecord().initDefaultValue();
+		//最新の注釈を処理
+		latestLineRecordProccess();
 	}
 
 	@Override

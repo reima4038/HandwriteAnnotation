@@ -20,6 +20,7 @@ public class ControllerFrame extends JFrame{
 		ControllerPanel clPanel = ControllerPanel.getInstance();
 		getContentPane().add(clPanel, BorderLayout.CENTER);
 		pack();
+		setLocation(800, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import client.layer.HandwriteLayerFrame;
 
 import common.data.SessionStatus;
 import common.ui.ControllerFrame;

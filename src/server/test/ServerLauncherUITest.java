@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import server.only.ui.ServerLancherFrame;
-import server.only.ui.ServerLancherPanel;
+import server.ui.only.ServerLancherFrame;
+import server.ui.only.ServerLancherPanel;
 
 public class ServerLauncherUITest {
 

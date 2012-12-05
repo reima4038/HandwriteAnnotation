@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import client.layer.HandwriteLayerPanel;
+import client.ui.HandwriteLayerPanel;
 
 import common.data.LineRecord;
 import common.data.SessionStatus;

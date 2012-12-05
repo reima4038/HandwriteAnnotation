@@ -1,10 +1,11 @@
-package client.layer;
+package client.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.IllegalComponentStateException;
 
 import javax.swing.JFrame;
+
 
 public class HandwriteLayerFrame extends JFrame {
 

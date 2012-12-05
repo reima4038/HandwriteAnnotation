@@ -1,4 +1,4 @@
-package server.layer;
+package server.ui.integrated;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,8 +6,9 @@ import java.awt.IllegalComponentStateException;
 
 import javax.swing.JFrame;
 
-import client.layer.HandwriteLayerFrame;
-import client.layer.HandwriteLayerPanel;
+
+import client.ui.HandwriteLayerFrame;
+import client.ui.HandwriteLayerPanel;
 
 public class IntegratedHandwriteLayerFrame extends JFrame{
 	private static final IntegratedHandwriteLayerFrame ihlFrame = new IntegratedHandwriteLayerFrame();

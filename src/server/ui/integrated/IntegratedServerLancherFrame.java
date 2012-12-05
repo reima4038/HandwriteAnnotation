@@ -1,10 +1,10 @@
-package server.integrated.ui;
+package server.ui.integrated;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import server.only.ui.ServerLancherPanel;
+import server.ui.only.ServerLancherPanel;
 
 public class IntegratedServerLancherFrame extends JFrame{
 	

@@ -15,15 +15,15 @@ public class SessionStatus {
 
 	private final static SessionStatus sStatus = new SessionStatus();
 	
-	/*
+	/*------------------------------------------
 	 *　for SocketConnection 
-	 */
-	//通信するサーバのIPアドレス
+	 *------------------------------------------*/
+	//通信相手のIPアドレス
 	private InetAddress sInetAddress;
 	
-	/*
+	/*------------------------------------------
 	 * for HandwriteLayerStatus
-	 */
+	 *------------------------------------------*/
 	//注釈の数
 	private int annoNum;
 	//描画中か否か
@@ -32,23 +32,28 @@ public class SessionStatus {
 	//記録中か否か
 	private boolean recordingFlag;
 	
-	//自分のID
-	private int ownID;
 	//現在の描画色
 	private int currentLineColor;
 
 	//ウインドウの透明度
 	private int windowAlpha;
 	
-	/*
-	 * 注釈データ格納配列
-	 * latestLineRecord: 自分で描画した最新レコード
-	 * receivedLineRecord: 受信したレコード
-	 * lineRecords: 統合したレコード全て
-	 */
+	//自分で描画した最新レコード
 	private LineRecord latestLineRecord;
+	//受信したレコード
 	private LineRecord receivedLineRecord;
+	//統合したレコード
 	private ArrayList<LineRecord> lineRecords;
+	
+	/*------------------------------------------
+	 * for Logging
+	 *------------------------------------------*/
+	//記録開始時間
+	private int loggingStartTime;
+	//記録終了時間
+	private int loggingStopTime;
+	
+	
 	
 	private SessionStatus(){
 		initValLayerPanel();

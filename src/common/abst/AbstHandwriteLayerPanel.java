@@ -132,10 +132,26 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 	 * ・最新注釈を初期化
 	 */
 	protected abstract void latestLineRecordProccess();
+
+	
+	/**
+	 * マウスクリック時にタイムスタンプをとる
+	 */
+	protected void clickTimeStamp(){
+		SessionStatus.getInstance().getLatestLineRecord().setClickTimeStampCurrentTime();
+	}
+	
+	/**
+	 * マウスリリース時にタイムスタンプをとる
+	 */
+	protected void releaseTimeStamp(){
+		SessionStatus.getInstance().getLatestLineRecord().setReleaseStampCurrentTime();
+	}
+
 	
 	@Override
 	public void mouseClicked(MouseEvent ev) {
-
+		clickTimeStamp();
 	}
 
 	@Override
@@ -155,7 +171,8 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 
 	@Override
 	public void mouseReleased(MouseEvent ev) {
-
+		latestLineRecordProccess();
+		releaseTimeStamp();
 	}
 
 	@Override
@@ -165,7 +182,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 
 	@Override
 	public void mouseMoved(MouseEvent ev) {
-
+		
 	}
 
 }

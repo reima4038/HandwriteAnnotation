@@ -117,6 +117,7 @@ public class LineRecord {
 	 */
 	public void setClickTimeStampCurrentTime(){
 		this.clickTimeStamp = System.currentTimeMillis();
+		Utl.dPrintln("ClickTimeStamp: " + clickTimeStamp);
 	}
 
 	public void setReleaseTimeStamp(long releaseTimeStamp) {
@@ -128,6 +129,7 @@ public class LineRecord {
 	 */
 	public void setReleaseStampCurrentTime(){
 		this.releaseTimeStamp = System.currentTimeMillis();
+		Utl.dPrintln("ReleaseTimeStamp: " + releaseTimeStamp);
 	}
 
 	public void setRecord(ArrayList<Point> record) {

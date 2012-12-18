@@ -77,4 +77,5 @@ public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 		latestLineRecordProccess();
 	}
 
+
 }

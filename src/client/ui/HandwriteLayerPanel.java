@@ -76,16 +76,4 @@ public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 		return hlPanel;
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent ev) {
-		//最新の注釈を処理
-		latestLineRecordProccess();
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent ev) {
-		// ドラッグした点をSessionStatusのlatestLineRecordsに格納
-		SessionStatus.getInstance().getLatestLineRecord().getRecord().add(ev.getPoint());
-	}
-
 }

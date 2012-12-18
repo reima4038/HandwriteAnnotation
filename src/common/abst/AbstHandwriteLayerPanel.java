@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
 
@@ -137,21 +138,23 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 	/**
 	 * マウスクリック時にタイムスタンプをとる
 	 */
-	protected void clickTimeStamp(){
-		SessionStatus.getInstance().getLatestLineRecord().setClickTimeStampCurrentTime();
+	private void clickTimeStamp(){
+		LineRecord lr = SessionStatus.getInstance().getLatestLineRecord();
+		if(lr.getClickTimeStamp() == LineRecord.DEFAULT_VALUE){
+			lr.setClickTimeStampCurrentTime();
+		}
 	}
 	
 	/**
 	 * マウスリリース時にタイムスタンプをとる
 	 */
-	protected void releaseTimeStamp(){
+	private void releaseTimeStamp(){
 		SessionStatus.getInstance().getLatestLineRecord().setReleaseStampCurrentTime();
 	}
 
 	
 	@Override
 	public void mouseClicked(MouseEvent ev) {
-		clickTimeStamp();
 	}
 
 	@Override
@@ -171,13 +174,18 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 
 	@Override
 	public void mouseReleased(MouseEvent ev) {
-		latestLineRecordProccess();
+		//タイムスタンプを取得
 		releaseTimeStamp();
+		latestLineRecordProccess();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent ev) {
-	
+		//タイムスタンプを取得
+		clickTimeStamp();
+		// ドラッグした点をSessionStatusのlatestLineRecordsに格納
+		SessionStatus.getInstance().getLatestLineRecord().getRecord().add(ev.getPoint());
+
 	}
 
 	@Override

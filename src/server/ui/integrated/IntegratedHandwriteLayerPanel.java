@@ -65,17 +65,4 @@ public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 		ss.getLatestLineRecord().initDefaultValue();		
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent ev) {
-		// ドラッグした点をSessionStatusのlatestLineRecordsに格納
-		SessionStatus.getInstance().getLatestLineRecord().getRecord().add(ev.getPoint());
-	}
-	
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		//最新の注釈を処理
-		latestLineRecordProccess();
-	}
-
-
 }

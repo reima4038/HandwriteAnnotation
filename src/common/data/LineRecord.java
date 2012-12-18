@@ -13,7 +13,7 @@ import common.util.Utl;
  */
 public class LineRecord {
 
-	private static final int DEFAULT_VALUE = -1;
+	public static final int DEFAULT_VALUE = -1;
 	
 	// 付記したユーザのID
 	private int userID;

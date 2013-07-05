@@ -9,6 +9,7 @@ import java.nio.ByteOrder;
 
 import common.data.LineRecord;
 import common.data.Prefs;
+import common.data.SessionStatus;
 import common.util.Utl;
 
 public abstract class AbstUDP implements Runnable, Prefs{

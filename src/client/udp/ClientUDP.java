@@ -92,7 +92,6 @@ public class ClientUDP extends AbstUDP {
 		//サーバーのアドレスをセッションステータスから取得
 		Utl.dPrintln("PacketPreparating.Sending to: " + SessionStatus.getInstance().getSInetAddress());
 		InetAddress ip = SessionStatus.getInstance().getSInetAddress();
-
 		
 		//送信用データ、アドレス、ポートの情報を元に送信用パケットを用意
 		sendPacket = new DatagramPacket(sendData, sendData.length, ip, Prefs.DEFAULT_PORT);

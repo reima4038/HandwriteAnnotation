@@ -1,6 +1,5 @@
 package common.data;
 
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -18,6 +17,8 @@ public class SessionStatus {
 	/*------------------------------------------
 	 *　for SocketConnection 
 	 *------------------------------------------*/
+	//自分のIPアドレス
+	private String myInetAddress;
 	//通信相手のIPアドレス
 	private InetAddress sInetAddress;
 	
@@ -71,12 +72,20 @@ public class SessionStatus {
 	}
 	
 	public void initValSocket(String sIPAddress){
+		//相手のIPをセット
 		try {
 			sInetAddress = InetAddress.getByName(sIPAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e){
 			Utl.printlnErr("サーバのIPアドレスの初期化処理に失敗しました.\nサーバIPが指定されていません.");
+			e.printStackTrace();
+		}
+		
+		//自分のIPをセット
+		try {
+			myInetAddress = java.net.InetAddress.getLocalHost().toString();
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 	}
@@ -89,6 +98,11 @@ public class SessionStatus {
 	/*
 	 * getter, setter
 	 */
+	
+	public String getMyInetAddress(){
+		return myInetAddress;
+	}
+	
 	public LineRecord getLatestLineRecord() {
 		return latestLineRecord;
 	}

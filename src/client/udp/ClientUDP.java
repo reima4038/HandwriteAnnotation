@@ -17,7 +17,7 @@ import common.util.Utl;
 
 public class ClientUDP extends AbstUDP {
 
-	private static final ClientUDP cUDP = new ClientUDP();
+	private static ClientUDP cUDP;
 
 	private ClientUDP() {
 		super();
@@ -71,6 +71,9 @@ public class ClientUDP extends AbstUDP {
 	}
 
 	public static ClientUDP getInstance() {
+		if(cUDP == null){
+			cUDP = new ClientUDP();
+		}
 		return cUDP;
 	}
 

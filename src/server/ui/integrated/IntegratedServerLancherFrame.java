@@ -9,7 +9,7 @@ import server.ui.only.ServerLancherPanel;
 public class IntegratedServerLancherFrame extends JFrame{
 	
 	private static final String SERVER_LANCHR_INTEGRATED_TITLE = "ServerLancherIntegrated";
-	private static final IntegratedServerLancherFrame sliFrame = new IntegratedServerLancherFrame();
+	private static IntegratedServerLancherFrame sliFrame;
 	
 	private IntegratedServerLancherFrame(){
 		setTitle(SERVER_LANCHR_INTEGRATED_TITLE);
@@ -21,6 +21,9 @@ public class IntegratedServerLancherFrame extends JFrame{
 	}
 
 	public static IntegratedServerLancherFrame getInstance(){
+		if(sliFrame == null){
+			sliFrame = new IntegratedServerLancherFrame();
+		}
 		return sliFrame;
 	}
 	

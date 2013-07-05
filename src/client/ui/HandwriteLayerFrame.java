@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 
 public class HandwriteLayerFrame extends JFrame {
 
-	private static final HandwriteLayerFrame hlFrame = new HandwriteLayerFrame();
+	private static HandwriteLayerFrame hlFrame;
 
 	private HandwriteLayerFrame() {
 		try {
@@ -30,6 +30,9 @@ public class HandwriteLayerFrame extends JFrame {
 	}
 
 	public static HandwriteLayerFrame getInstance() {
+		if(hlFrame == null){
+			hlFrame = new HandwriteLayerFrame();
+		}
 		return hlFrame;
 	}
 	

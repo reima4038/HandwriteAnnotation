@@ -17,7 +17,7 @@ import common.util.Utl;
 
 public class ServerUDP extends AbstUDP{
 	
-	private static final ServerUDP sUDP = new ServerUDP();
+	private static ServerUDP sUDP;
 	
 	//クライアントのアドレスリスト
 	protected ArrayList<InetAddress> clientAddresses;
@@ -66,6 +66,9 @@ public class ServerUDP extends AbstUDP{
 	}
 
 	public static ServerUDP getInstance(){
+		if(sUDP == null){
+			 sUDP = new ServerUDP();
+		}
 		return sUDP;
 	}
 

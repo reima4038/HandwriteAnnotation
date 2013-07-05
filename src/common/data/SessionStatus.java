@@ -12,7 +12,7 @@ import common.util.Utl;
  */
 public class SessionStatus {
 
-	private final static SessionStatus sStatus = new SessionStatus();
+	private static SessionStatus sStatus;
 	
 	/*------------------------------------------
 	 *　for SocketConnection 
@@ -65,7 +65,7 @@ public class SessionStatus {
 		drawFlagOwn = false;
 		drawFlagPartner = false;
 		recordingFlag = false;
-		windowAlpha = 0;
+		windowAlpha = 255;
 		latestLineRecord = new LineRecord();
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();
@@ -91,6 +91,9 @@ public class SessionStatus {
 	}
 	
 	public static SessionStatus getInstance(){
+		if(sStatus == null){
+			sStatus = new SessionStatus();
+		}
 		return sStatus;
 	}
 	

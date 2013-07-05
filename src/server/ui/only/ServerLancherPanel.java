@@ -31,7 +31,7 @@ public class ServerLancherPanel extends JPanel implements ActionListener{
 	private static final Point P_BTN_LAUNCH = new Point(10, 70);
 	private static final Point P_BTN_END = new Point(100, 70);
 	
-	private static final ServerLancherPanel slPanel = new ServerLancherPanel();
+	private static ServerLancherPanel slPanel;
 	
 	private JButton bLaunch;
 	private JButton bEnd;
@@ -65,6 +65,9 @@ public class ServerLancherPanel extends JPanel implements ActionListener{
 	}
 	
 	public static ServerLancherPanel getInstance(){
+		if(slPanel == null){
+			slPanel = new ServerLancherPanel();
+		}
 		return slPanel;
 	}
 	

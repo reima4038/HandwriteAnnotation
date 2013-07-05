@@ -32,7 +32,7 @@ public class IntegratedServerLancherPanel extends JPanel implements
 	private static final Point P_BTN_LAUNCH = new Point(10, 70);
 	private static final Point P_BTN_END = new Point(100, 70);
 
-	private static final IntegratedServerLancherPanel sliPanel = new IntegratedServerLancherPanel();
+	private static IntegratedServerLancherPanel sliPanel;
 
 	private JButton bLaunch;
 	private JButton bEnd;
@@ -66,6 +66,9 @@ public class IntegratedServerLancherPanel extends JPanel implements
 	}
 
 	public static IntegratedServerLancherPanel getInstance() {
+		if(sliPanel == null){
+			sliPanel = new IntegratedServerLancherPanel();
+		}
 		return sliPanel;
 	}
 

@@ -37,7 +37,7 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 	private static final Point P_BTN_LAUNCH = new Point(10, 70);
 	private static final Point P_BTN_END = new Point(100, 70);
 	
-	private static final ClientLancherPanel clPanel = new ClientLancherPanel();
+	private static ClientLancherPanel clPanel;
 	
 	private JTextField tfAddress;
 	private JButton bLaunch;
@@ -79,6 +79,9 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 	}
 	
 	public static ClientLancherPanel getInstance(){
+		if(clPanel == null){
+			clPanel = new ClientLancherPanel();
+		}
 		return clPanel;
 	}
 	

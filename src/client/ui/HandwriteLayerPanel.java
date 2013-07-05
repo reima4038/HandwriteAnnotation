@@ -23,7 +23,7 @@ import common.util.CDraw;
  */
 public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 
-	private static final HandwriteLayerPanel hlPanel = new HandwriteLayerPanel();
+	private static HandwriteLayerPanel hlPanel;
 
 	private HandwriteLayerPanel() {
 		super();
@@ -73,6 +73,9 @@ public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 	}
 
 	public static HandwriteLayerPanel getInstance() {
+		if(hlPanel == null){
+			 hlPanel = new HandwriteLayerPanel();
+		}
 		return hlPanel;
 	}
 

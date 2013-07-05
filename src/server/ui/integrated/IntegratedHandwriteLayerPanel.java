@@ -19,7 +19,7 @@ import common.util.Utl;
 
 public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 
-	private static final IntegratedHandwriteLayerPanel ihlPanel = new IntegratedHandwriteLayerPanel();
+	private static IntegratedHandwriteLayerPanel ihlPanel;
 
 	private IntegratedHandwriteLayerPanel() {
 		super();
@@ -34,6 +34,9 @@ public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 	}
 
 	public static IntegratedHandwriteLayerPanel getInstance() {
+		if(ihlPanel == null){
+			 ihlPanel = new IntegratedHandwriteLayerPanel();
+		}
 		return ihlPanel;
 	}
 	

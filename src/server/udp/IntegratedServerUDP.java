@@ -15,7 +15,7 @@ import common.util.Utl;
 
 public class IntegratedServerUDP extends AbstUDP {
 
-	private static final IntegratedServerUDP isUDP = new IntegratedServerUDP();
+	private static IntegratedServerUDP isUDP;
 
 	// クライアントのアドレス
 	private InetAddress clientAddress;
@@ -26,6 +26,9 @@ public class IntegratedServerUDP extends AbstUDP {
 	}
 
 	public static IntegratedServerUDP getInstance() {
+		if(isUDP == null){
+			 isUDP = new IntegratedServerUDP();
+		}
 		return isUDP;
 	}
 

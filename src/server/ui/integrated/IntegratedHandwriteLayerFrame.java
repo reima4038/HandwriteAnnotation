@@ -11,7 +11,7 @@ import client.ui.HandwriteLayerFrame;
 import client.ui.HandwriteLayerPanel;
 
 public class IntegratedHandwriteLayerFrame extends JFrame{
-	private static final IntegratedHandwriteLayerFrame ihlFrame = new IntegratedHandwriteLayerFrame();
+	private static IntegratedHandwriteLayerFrame ihlFrame;
 
 	private IntegratedHandwriteLayerFrame() {
 		try {
@@ -32,6 +32,9 @@ public class IntegratedHandwriteLayerFrame extends JFrame{
 	}
 
 	public static IntegratedHandwriteLayerFrame getInstance() {
+		if(ihlFrame == null){
+			 ihlFrame = new IntegratedHandwriteLayerFrame();
+		}
 		return ihlFrame;
 	}
 	

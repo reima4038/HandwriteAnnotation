@@ -56,7 +56,7 @@ public class ControllerPanel extends JPanel implements ActionListener{
 	private static final Point P_BTN_LSTOP = new Point(COL_CENTER, ROW_LOWER);
 	private static final Point P_BTN_LEXPORT = new Point(COL_RIGHT, ROW_UPPER);
 
-	private static final ControllerPanel cPanel = new ControllerPanel();
+	private static ControllerPanel cPanel;
 	
 	private JButton bWriteMode;
 	private JButton bClearWindow;
@@ -136,6 +136,9 @@ public class ControllerPanel extends JPanel implements ActionListener{
 	}
 	
 	public static ControllerPanel getInstance(){
+		if(cPanel == null){
+			cPanel = new ControllerPanel();
+		}
 		return cPanel;
 	}
 

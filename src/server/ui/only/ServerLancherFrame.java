@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 public class ServerLancherFrame extends JFrame{
 
 	private static final String SERVER_LANCHR_TITLE = "ServerLancher";
-	private static final ServerLancherFrame slFrame = new ServerLancherFrame();
+	private static ServerLancherFrame slFrame;
 	
 	private ServerLancherFrame(){
 		setTitle(SERVER_LANCHR_TITLE);
@@ -20,6 +20,9 @@ public class ServerLancherFrame extends JFrame{
 	
 	
 	public static ServerLancherFrame getInstance(){
+		if(slFrame == null){
+			 slFrame = new ServerLancherFrame();
+		}
 		return slFrame;
 	}
 	

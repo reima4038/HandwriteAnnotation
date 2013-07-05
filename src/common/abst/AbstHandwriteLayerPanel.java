@@ -14,16 +14,19 @@ import common.util.CDraw;
 
 public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implements MouseListener, MouseMotionListener{
 	protected static final Dimension PANEL_SIZE = new Dimension(800, 640);
-	protected static final Color PANEL_BACKGROUND = new Color(0, 0, 0, 50);
+	protected static Color panelBackground;
 	
 	//描画する線の太さ
 	private static final int DRAW_LINE_BOLD = 1;
 	
 	protected AbstHandwriteLayerPanel(){
 		super();
+		
+		panelBackground = new Color(0, 0, 0, SessionStatus.getInstance().getWindowAlpha());
+		
 		setPreferredSize(PANEL_SIZE);
 		setLayout(null);
-		setBackground(PANEL_BACKGROUND);
+		setBackground(panelBackground);
 		setFocusable(true);
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -192,5 +195,5 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 	public void mouseMoved(MouseEvent ev) {
 		
 	}
-
+	
 }

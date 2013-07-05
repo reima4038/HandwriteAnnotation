@@ -10,7 +10,7 @@ import common.util.Utl;
  * セッション中の変数を保持するクラス
  * @author Reima
  */
-public class SessionStatus {
+public class SessionStatus implements Prefs{
 
 	private static SessionStatus sStatus;
 	
@@ -65,7 +65,7 @@ public class SessionStatus {
 		drawFlagOwn = false;
 		drawFlagPartner = false;
 		recordingFlag = false;
-		windowAlpha = 255;
+		windowAlpha = HWL_ALPHA_MAX;
 		latestLineRecord = new LineRecord();
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();
@@ -125,6 +125,10 @@ public class SessionStatus {
 	public InetAddress getSInetAddress(){
 		return sInetAddress;
 	}
+	
+	public int getWindowAlpha(){
+		return windowAlpha;
+	}
 
 	public void setLatestLineRecord(LineRecord latestLineRecord) {
 		this.latestLineRecord = latestLineRecord;
@@ -140,6 +144,10 @@ public class SessionStatus {
 	
 	public void setRecordingFlag(boolean recordingFlag){
 		this.recordingFlag = recordingFlag;
+	}
+	
+	public void setWindowAlpha(int windowAlpha){
+		this.windowAlpha = windowAlpha;
 	}
 	
 }

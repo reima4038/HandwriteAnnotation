@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import common.data.Prefs;
 import common.data.SessionStatus;
 import common.util.FileOutput;
 
@@ -17,7 +18,7 @@ import common.util.FileOutput;
  * @author Reima
  *
  */
-public class ControllerPanel extends JPanel implements ActionListener{
+public class ControllerPanel extends JPanel implements ActionListener, Prefs{
 	
 	private static final Dimension PANEL_SIZE = new Dimension(410, 90);
 	private static final Color PANEL_BACKGROUND = Color.white;
@@ -146,6 +147,14 @@ public class ControllerPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand() == NAME_BTN_WM){
 			System.out.println("Button:WriteMode is Pressed.");
+			SessionStatus ss = SessionStatus.getInstance();
+			if(ss.getWindowAlpha() == HWL_ALPHA_MIN){
+				ss.setWindowAlpha(HWL_ALPHA_MAX);
+			}
+			else{
+				ss.setWindowAlpha(HWL_ALPHA_MIN);
+			}
+			
 			
 		}else if(ev.getActionCommand() == NAME_BTN_CW){
 			System.out.println("Button:ClearWindow is Pressed.");

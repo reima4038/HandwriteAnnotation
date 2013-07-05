@@ -14,5 +14,10 @@ public interface Prefs {
 
 	//ログファイル名
 	public static final String LOG_FILE_NAME = "logfile";
-
+	
+	//手書き注釈レイヤのアルファ値上限
+	public static final int HWL_ALPHA_MAX = 50;
+	
+	//手書き注釈レイヤのアルファ値下限
+	public static final int HWL_ALPHA_MIN = 0;
 }

@@ -45,7 +45,11 @@ public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 
 	@Override
 	protected void frameRender(Graphics2D g) {
-		g.setBackground(PANEL_BACKGROUND);
+		//ウィンドウの透明度が変わったかを判定
+		if(panelBackground.getAlpha() != SessionStatus.getInstance().getWindowAlpha()){
+			panelBackground = new Color(0, 0, 0, SessionStatus.getInstance().getWindowAlpha());
+		}
+		g.setBackground(panelBackground);
 		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
 		drawHandwriteAnnotation(g);
 		drawStatus(g);

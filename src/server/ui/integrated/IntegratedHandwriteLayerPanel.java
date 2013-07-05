@@ -41,23 +41,6 @@ public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 	}
 	
 	@Override
-	protected void frameUpdate(int skipped) {
-
-	}
-
-	@Override
-	protected void frameRender(Graphics2D g) {
-		//ウィンドウの透明度が変わったかを判定
-		if(panelBackground.getAlpha() != SessionStatus.getInstance().getWindowAlpha()){
-			panelBackground = new Color(0, 0, 0, SessionStatus.getInstance().getWindowAlpha());
-		}
-		g.setBackground(panelBackground);
-		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
-		drawHandwriteAnnotation(g);
-		drawStatus(g);		
-	}
-	
-	@Override
 	protected void latestLineRecordProccess() {
 		SessionStatus ss = SessionStatus.getInstance();
 		LineRecord lr = ss.getLatestLineRecord().clone();

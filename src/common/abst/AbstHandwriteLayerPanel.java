@@ -3,6 +3,7 @@ package common.abst;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -194,6 +195,23 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 	@Override
 	public void mouseMoved(MouseEvent ev) {
 		
+	}
+	
+	@Override
+	protected void frameUpdate(int skipped) {
+
+	}
+
+	@Override
+	protected void frameRender(Graphics2D g) {
+		//ウィンドウの透明度が変わったかを判定
+		if(panelBackground.getAlpha() != SessionStatus.getInstance().getWindowAlpha()){
+			panelBackground = new Color(0, 0, 0, SessionStatus.getInstance().getWindowAlpha());
+		}
+		g.setBackground(panelBackground);
+		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
+		drawHandwriteAnnotation(g);
+		drawStatus(g);		
 	}
 	
 }

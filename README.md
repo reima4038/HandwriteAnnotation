@@ -1,6 +1,8 @@
 for research
-handwrite annotation
+handwrite annotation<br>
+<br>
 
-利用には環境変数Pathにlibを通す必要あり。
-JNIでwin32APIを叩くため、dllを導入している。
-これをインポートするために、jarファイルをビルドパスに追加するだけでなく、上記の設定が必要となる。
+<h2>開発memo：動作にあたっての注意</h2>
+利用には環境変数Pathにlibディレクトリを追記する必要あり。<br>
+JNIでwin32APIを叩くため、dllを導入している。<br>
+これをインポートするために、jarファイルをビルドパスに追加するだけでなく、環境変数への記述が必要となる。<br>

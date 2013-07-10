@@ -154,11 +154,10 @@ public class ControllerPanel extends JPanel implements ActionListener, Prefs{
 			else{
 				ss.setWindowAlpha(HWL_ALPHA_MIN);
 			}
-			
-			
 		}else if(ev.getActionCommand() == NAME_BTN_CW){
 			System.out.println("Button:ClearWindow is Pressed.");
-
+			SessionStatus.getInstance().getLineRecords().clear();
+			
 		}else if(ev.getActionCommand() == NAME_BTN_TM){
 			System.out.println("Button:TargetMode is Pressed.");
 			

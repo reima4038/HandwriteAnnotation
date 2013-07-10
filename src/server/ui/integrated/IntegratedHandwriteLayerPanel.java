@@ -54,5 +54,14 @@ public class IntegratedHandwriteLayerPanel extends AbstHandwriteLayerPanel{
 		//最新の注釈を破棄
 		ss.getLatestLineRecord().initDefaultValue();		
 	}
-
+	
+	/**
+	 * インスタンスが生成されているか
+	 */
+	public static boolean isInstance(){
+		if(ihlPanel != null){
+			return true;
+		}
+		return false;
+	}
 }

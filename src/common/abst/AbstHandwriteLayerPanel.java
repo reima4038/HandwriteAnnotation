@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,7 +18,7 @@ import common.data.SessionStatus;
 import common.util.CDraw;
 
 public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implements MouseListener, MouseMotionListener{
-	protected static final Dimension PANEL_SIZE = new Dimension(800, 640);
+	protected static Dimension PANEL_SIZE;
 	protected static Color panelBackground;
 	
 	//描画する線の太さ
@@ -22,15 +26,33 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 	
 	protected AbstHandwriteLayerPanel(){
 		super();
-		
 		panelBackground = new Color(0, 0, 0, SessionStatus.getInstance().getWindowAlpha());
 		
+		/*
+		 * パネルの可変できる最大のサイズはPreferredSizeに依存する。
+		 * デスクトップのサイズをPreferredSizeに設定することで、画面上に存在するウインドウ全てに対応する。
+		 */
+		detectDesktop();
 		setPreferredSize(PANEL_SIZE);
+		
 		setLayout(null);
 		setBackground(panelBackground);
 		setFocusable(true);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+	}
+	
+	/**
+	 * デスクトップサイズを計測
+	 */
+	private void detectDesktop(){
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+		GraphicsDevice gd = gs[0];
+		GraphicsConfiguration[] gc = gd.getConfigurations();
+		GraphicsConfiguration gc0 = gc[0];
+		Rectangle rect = gc0.getBounds();
+		PANEL_SIZE = new Dimension(rect.width, rect.height);
 	}
 	
 	/**

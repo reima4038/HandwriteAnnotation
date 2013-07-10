@@ -15,6 +15,7 @@ import common.abst.AbstHandwriteLayerPanel;
 import common.data.LineRecord;
 import common.data.SessionStatus;
 import common.util.CDraw;
+import common.util.Utl;
 
 /**
  * 手書きレイヤの本体
@@ -23,7 +24,7 @@ import common.util.CDraw;
  */
 public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 
-	private static HandwriteLayerPanel hlPanel;
+	private static HandwriteLayerPanel hlPanel = null;
 
 	private HandwriteLayerPanel() {
 		super();
@@ -63,6 +64,17 @@ public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 			 hlPanel = new HandwriteLayerPanel();
 		}
 		return hlPanel;
+	}
+	
+	/**
+	 * インスタンスが生成されているか
+	 * @return
+	 */
+	public static boolean isInstance(){
+		if(hlPanel != null){
+			return true;
+		}
+		return false;
 	}
 
 }

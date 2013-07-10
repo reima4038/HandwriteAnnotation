@@ -15,7 +15,7 @@ public class SessionStatus implements Prefs{
 	private static SessionStatus sStatus;
 	
 	/*------------------------------------------
-	 *　for SocketConnection 
+	 *　for SocketConnection ソケット通信に関して
 	 *------------------------------------------*/
 	//自分のIPアドレス
 	private String myInetAddress;
@@ -23,7 +23,7 @@ public class SessionStatus implements Prefs{
 	private InetAddress sInetAddress;
 	
 	/*------------------------------------------
-	 * for HandwriteLayerStatus
+	 * for HandwriteLayerStatus　手書き注釈パネルに関して
 	 *------------------------------------------*/
 	//注釈の数
 	private int annoNum;
@@ -47,20 +47,25 @@ public class SessionStatus implements Prefs{
 	private ArrayList<LineRecord> lineRecords;
 	
 	/*------------------------------------------
-	 * for Logging
+	 * for Logging 注釈ログの記録に関して
 	 *------------------------------------------*/
 	//記録開始時間
 	private int loggingStartTime;
 	//記録終了時間
 	private int loggingStopTime;
 	
+	/*------------------------------------------
+	 * for hwnd ウインドウハンドルに関して
+	 *------------------------------------------*/
+	private int hWnd;
 	
+	/*------------------------------------------
+	 *　for Desktop デスクトップに関して
+	 *------------------------------------------*/
+	private int dWidth;
+	private int dHeight;
 	
 	private SessionStatus(){
-		initValLayerPanel();
-	}
-	
-	private void initValLayerPanel(){
 		annoNum = 0;
 		drawFlagOwn = false;
 		drawFlagPartner = false;
@@ -69,6 +74,10 @@ public class SessionStatus implements Prefs{
 		latestLineRecord = new LineRecord();
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();
+		
+		hWnd = -1;
+		dWidth = -1;
+		dHeight = -1;
 	}
 	
 	public void initValSocket(String sIPAddress){
@@ -128,6 +137,30 @@ public class SessionStatus implements Prefs{
 	
 	public int getWindowAlpha(){
 		return windowAlpha;
+	}
+
+	public int gethWnd() {
+		return hWnd;
+	}
+
+	public int getdWidth() {
+		return dWidth;
+	}
+
+	public int getdHeight() {
+		return dHeight;
+	}
+
+	public void setdWidth(int dWidth) {
+		this.dWidth = dWidth;
+	}
+
+	public void setdHeight(int dHeight) {
+		this.dHeight = dHeight;
+	}
+
+	public void sethWnd(int hWnd) {
+		this.hWnd = hWnd;
 	}
 
 	public void setLatestLineRecord(LineRecord latestLineRecord) {

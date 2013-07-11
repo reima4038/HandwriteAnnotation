@@ -18,7 +18,7 @@ import common.data.SessionStatus;
 import common.util.CDraw;
 
 public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implements MouseListener, MouseMotionListener{
-	protected static Dimension PANEL_SIZE;
+	protected static Dimension PANEL_MAX_SIZE;
 	protected static Color panelBackground;
 	
 	//描画する線の太さ
@@ -33,7 +33,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 		 * デスクトップのサイズをPreferredSizeに設定することで、画面上に存在するウインドウ全てに対応する。
 		 */
 		detectDesktop();
-		setPreferredSize(PANEL_SIZE);
+		setPreferredSize(PANEL_MAX_SIZE);
 		
 		setLayout(null);
 		setBackground(panelBackground);
@@ -52,7 +52,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 		GraphicsConfiguration[] gc = gd.getConfigurations();
 		GraphicsConfiguration gc0 = gc[0];
 		Rectangle rect = gc0.getBounds();
-		PANEL_SIZE = new Dimension(rect.width, rect.height);
+		PANEL_MAX_SIZE = new Dimension(rect.width, rect.height);
 	}
 	
 	/**
@@ -231,7 +231,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel implemen
 			panelBackground = new Color(0, 0, 0, SessionStatus.getInstance().getWindowAlpha());
 		}
 		g.setBackground(panelBackground);
-		g.clearRect(0, 0, PANEL_SIZE.width, PANEL_SIZE.height);
+		g.clearRect(0, 0, this.getPreferredSize().width, this.getPreferredSize().height);
 		drawHandwriteAnnotation(g);
 		drawStatus(g);		
 	}

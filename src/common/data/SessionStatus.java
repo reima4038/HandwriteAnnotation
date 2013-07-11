@@ -70,7 +70,7 @@ public class SessionStatus implements Prefs{
 		drawFlagOwn = false;
 		drawFlagPartner = false;
 		recordingFlag = false;
-		windowAlpha = HWL_ALPHA_MAX;
+		windowAlpha = HWL_ALPHA_MIN;
 		latestLineRecord = new LineRecord();
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();

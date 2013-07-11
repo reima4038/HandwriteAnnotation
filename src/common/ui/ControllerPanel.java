@@ -178,7 +178,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			changeWritable();
 		} else if (ev.getActionCommand() == NAME_BTN_CW) {
 			System.out.println("Button:ClearWindow is Pressed.");
-			SessionStatus.getInstance().getLineRecords().clear();
+			clearAnnotation();
 
 		} else if (ev.getActionCommand() == NAME_BTN_CS) {
 			System.out.println("Button:ColorSet is Pressed.");
@@ -209,19 +209,33 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			changeWritable();
 			break;
 		case HOTKEY_CLEAR:
-			SessionStatus.getInstance().getLineRecords().clear();
+			clearAnnotation();
 			break;
 		case HOTKEY_UNDO:
-			SessionStatus ss = SessionStatus.getInstance();
-			int lrSize = ss.getLineRecords().size();
-			if(lrSize > 0){
-				//末尾の要素を削除
-				ss.getLineRecords().remove(lrSize - 1);
-			}
+			undoAnnotation();
 			break;
 		case HOTKEY_EXIT:
 			System.exit(0);
 			break;
+		}
+	}
+
+	/**
+	 * 手書き注釈を全消去
+	 */
+	private void clearAnnotation() {
+		SessionStatus.getInstance().getLineRecords().clear();
+	}
+
+	/**
+	 * 手書き注釈のアンドゥ
+	 */
+	private void undoAnnotation() {
+		SessionStatus ss = SessionStatus.getInstance();
+		int lrSize = ss.getLineRecords().size();
+		if(lrSize > 0){
+			//末尾の要素を削除
+			ss.getLineRecords().remove(lrSize - 1);
 		}
 	}
 

@@ -78,7 +78,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private static final int HOTKEY_GET_WHND = 1;
 	private static final int HOTKEY_WRITABLE = 2;
 	private static final int HOTKEY_CLEAR = 3;
-	private static final int HOTKEY_EXIT = 4;
+	private static final int HOTKEY_UNDO = 4;
+	private static final int HOTKEY_EXIT = 5;
 
 	private static ControllerPanel cPanel;
 
@@ -102,6 +103,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 				JIntellitype.MOD_WIN, (int) 'W');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_CLEAR,
 				JIntellitype.MOD_WIN, (int) 'C');
+		JIntellitype.getInstance().registerHotKey(HOTKEY_UNDO,
+				JIntellitype.MOD_WIN, (int) 'Z');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_EXIT,
 				JIntellitype.MOD_WIN, (int) 'Q');
 		JIntellitype.getInstance().addHotKeyListener(this);
@@ -207,6 +210,14 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			break;
 		case HOTKEY_CLEAR:
 			SessionStatus.getInstance().getLineRecords().clear();
+			break;
+		case HOTKEY_UNDO:
+			SessionStatus ss = SessionStatus.getInstance();
+			int lrSize = ss.getLineRecords().size();
+			if(lrSize > 0){
+				//末尾の要素を削除
+				ss.getLineRecords().remove(lrSize - 1);
+			}
 			break;
 		case HOTKEY_EXIT:
 			System.exit(0);

@@ -77,7 +77,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	// HotKey
 	private static final int HOTKEY_GET_WHND = 1;
 	private static final int HOTKEY_WRITABLE = 2;
-	private static final int HOTKEY_EXIT = 3;
+	private static final int HOTKEY_CLEAR = 3;
+	private static final int HOTKEY_EXIT = 4;
 
 	private static ControllerPanel cPanel;
 
@@ -99,6 +100,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 				JIntellitype.MOD_WIN, (int) 'S');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_WRITABLE,
 				JIntellitype.MOD_WIN, (int) 'W');
+		JIntellitype.getInstance().registerHotKey(HOTKEY_CLEAR,
+				JIntellitype.MOD_WIN, (int) 'C');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_EXIT,
 				JIntellitype.MOD_WIN, (int) 'Q');
 		JIntellitype.getInstance().addHotKeyListener(this);
@@ -202,6 +205,9 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 		case HOTKEY_WRITABLE:
 			changeWritable();
 			break;
+		case HOTKEY_CLEAR:
+			SessionStatus.getInstance().getLineRecords().clear();
+			break;
 		case HOTKEY_EXIT:
 			System.exit(0);
 			break;
@@ -251,8 +257,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 				+ (wRect.right - wRect.left) + " h: "
 				+ (wRect.bottom - wRect.top));
 		Rectangle r = new Rectangle(wRect.left, wRect.top,
-				(wRect.right - wRect.left) - SCROLL_V, wRect.top
-						+ (wRect.bottom - wRect.top) - SCROLL_W);
+				(wRect.right - wRect.left) - SCROLL_V,
+				+(wRect.bottom - wRect.top) - SCROLL_W);
 
 		// 手書き注釈レイヤの大きさを変更(手書き注釈レイヤがIntegrated版か否かをまず判断してから)
 		if (HandwriteLayerPanel.isInstance()) {

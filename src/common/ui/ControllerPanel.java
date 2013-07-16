@@ -15,9 +15,9 @@ import javax.swing.JPanel;
 import org.eclipse.swt.internal.win32.OS;
 import org.eclipse.swt.internal.win32.POINT;
 import org.eclipse.swt.internal.win32.RECT;
+import org.eclipse.swt.internal.win32.SCROLLINFO;
 
 import server.ui.integrated.IntegratedHandwriteLayerPanel;
-
 import client.ui.HandwriteLayerPanel;
 
 import com.melloware.jintellitype.HotkeyListener;
@@ -54,7 +54,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private static final Dimension DM_BTN_LSTART = COMMON_BTN_SIZE;
 	private static final Dimension DM_BTN_LSTOP = COMMON_BTN_SIZE;
 	private static final Dimension DM_BTN_LEXPORT = COMMON_BTN_SIZE;
-
+	
 	// for Button Layout
 	private static final int ROW_UPPER = 10;
 	private static final int ROW_MIDDLE = 35;
@@ -81,15 +81,17 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private static final int HOTKEY_UNDO = 4;
 	private static final int HOTKEY_EXIT = 5;
 
+	//シングルトン
 	private static ControllerPanel cPanel;
 
+	//コンポーネント
 	private JButton bWriteMode;
 	private JButton bClearWindow;
 	private JButton bColorSet;
 	private JButton bLogStart;
 	private JButton bLogStop;
 	private JButton bLogExport;
-
+	
 	private ControllerPanel() {
 		setPreferredSize(PANEL_SIZE);
 		setLayout(null);
@@ -161,7 +163,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 		this.add(bLogStart);
 		this.add(bLogStop);
 		this.add(bLogExport);
-
+		
 	}
 
 	public static ControllerPanel getInstance() {
@@ -255,12 +257,12 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	 * マウスポインタがある位置でウインドウハンドルを取得する
 	 */
 	private void getHWnd() {
-		Utl.dPrintln("TargetMode:Trueでクリックを検知しました。ウインドウハンドルの取得を開始します");
+		Utl.dPrintln("ウインドウハンドルの取得を開始します");
 		int hWnd = -1;
 		POINT p = null;
 		PointerInfo pi = null;
 		RECT wRect = null;
-
+		
 		// マウスポインタ位置を取得
 		pi = MouseInfo.getPointerInfo();
 
@@ -294,10 +296,41 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			Utl.printlnErr("手書き注釈レイヤのインスタンスが生成されていません。");
 		}
 		Utl.dPrintln("	手書き注釈レイヤの大きさを変更しました。");
-
+		
 		// セッションステータスにhwndを登録
 		SessionStatus.getInstance().sethWnd(hWnd);
 		Utl.dPrintln("	セッションにハンドルを登録しました。");
+		
+		//スクロールバーの現在の状況を取得・初期化
+		getScrollbarInfoALL();
+
 	}
 
+	/**
+	 * 縦スクロールバーの情報を全て取得する
+	 * Win32API
+	 */
+	public void getScrollbarInfoALL() {
+		SessionStatus ss = SessionStatus.getInstance();
+		if(ss.getScrV() == null){
+			ss.setScrV(new SCROLLINFO());
+		}
+		ss.getScrV().cbSize = SCROLLINFO.sizeof;
+		ss.getScrV().fMask = OS.SIF_ALL;
+		OS.GetScrollInfo(ss.gethWnd(), OS.SB_VERT, ss.getScrV());
+	}
+	
+	/**
+	 * 縦スクロールバーの情報のうち、現在の位置だけ取得する
+	 * Win32API
+	 */
+	public void getScrollInfoTrackPos(){
+		SessionStatus ss = SessionStatus.getInstance();
+		if(ss.getScrV() == null){
+			ss.setScrV(new SCROLLINFO());
+		}
+		ss.getScrV().cbSize = SCROLLINFO.sizeof;
+		ss.getScrV().fMask = OS.SIF_TRACKPOS;
+		OS.GetScrollInfo(ss.gethWnd(), OS.SB_VERT, ss.getScrV());
+	}
 }

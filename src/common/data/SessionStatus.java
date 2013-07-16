@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import org.eclipse.swt.internal.win32.SCROLLINFO;
+
 import common.util.Utl;
 
 /**
@@ -57,7 +59,10 @@ public class SessionStatus implements Prefs{
 	/*------------------------------------------
 	 * for hwnd ウインドウハンドルに関して
 	 *------------------------------------------*/
+	//ウインドウハンドル
 	private int hWnd;
+	//縦スクロールバーの情報
+	private SCROLLINFO scrV;
 	
 	/*------------------------------------------
 	 *　for Desktop デスクトップに関して
@@ -149,6 +154,14 @@ public class SessionStatus implements Prefs{
 
 	public int getdHeight() {
 		return dHeight;
+	}
+
+	public SCROLLINFO getScrV() {
+		return scrV;
+	}
+
+	public void setScrV(SCROLLINFO scrV) {
+		this.scrV = scrV;
 	}
 
 	public void setdWidth(int dWidth) {

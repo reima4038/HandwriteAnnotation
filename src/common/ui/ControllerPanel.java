@@ -77,9 +77,10 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	// HotKey
 	private static final int HOTKEY_GET_WHND = 1;
 	private static final int HOTKEY_WRITABLE = 2;
-	private static final int HOTKEY_CLEAR = 3;
-	private static final int HOTKEY_UNDO = 4;
-	private static final int HOTKEY_EXIT = 5;
+	private static final int HOTKEY_DISWRITABLE = 3;
+	private static final int HOTKEY_CLEAR = 4;
+	private static final int HOTKEY_UNDO = 5;
+	private static final int HOTKEY_EXIT = 6;
 
 	// シングルトン
 	private static ControllerPanel cPanel;
@@ -103,6 +104,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 				JIntellitype.MOD_WIN, (int) 'S');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_WRITABLE,
 				JIntellitype.MOD_WIN, (int) 'W');
+		JIntellitype.getInstance().registerHotKey(HOTKEY_DISWRITABLE,
+				JIntellitype.MOD_WIN + JIntellitype.MOD_SHIFT, (int) 'W');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_CLEAR,
 				JIntellitype.MOD_WIN, (int) 'C');
 		JIntellitype.getInstance().registerHotKey(HOTKEY_UNDO,
@@ -177,7 +180,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getActionCommand() == NAME_BTN_WM) {
 			System.out.println("Button:WriteMode is Pressed.");
-			changeWritable();
+			changeHWLMode();
 		} else if (ev.getActionCommand() == NAME_BTN_CW) {
 			System.out.println("Button:ClearWindow is Pressed.");
 			clearAnnotation();
@@ -199,25 +202,23 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	}
 
 	/**
-	 * ホットキー押下時の処理実装
+	 * ホットキー押下時の処理実装 
 	 */
 	@Override
 	public void onHotKey(int id) {
-		if (id == HOTKEY_GET_WHND){
+		if (id == HOTKEY_GET_WHND)
 			getHWnd();
-		}
-		else if (id == HOTKEY_WRITABLE){
-			changeWritable();
-		}
-		else if (id == HOTKEY_CLEAR){
+		else if (id == HOTKEY_WRITABLE)
+			writable();
+		else if (id == HOTKEY_DISWRITABLE)
+			disWritable();
+		else if (id == HOTKEY_CLEAR)
 			clearAnnotation();
-		}
-		else if (id == HOTKEY_UNDO){
+		else if (id == HOTKEY_UNDO)
 			undoAnnotation();
-		}
-		else if (id == HOTKEY_EXIT){
+		else if (id == HOTKEY_EXIT)
 			System.exit(0);
-		}
+
 	}
 
 	/**
@@ -242,13 +243,20 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	/**
 	 * 手書き注釈レイヤの書き込みの可不可を変更する
 	 */
-	private void changeWritable() {
-		SessionStatus ss = SessionStatus.getInstance();
-		if (ss.getWindowAlpha() == HWL_ALPHA_MIN) {
-			ss.setWindowAlpha(HWL_ALPHA_MAX);
+	private void changeHWLMode() {
+		if (SessionStatus.getInstance().getWindowAlpha() == HWL_ALPHA_MIN) {
+			writable();
 		} else {
-			ss.setWindowAlpha(HWL_ALPHA_MIN);
+			disWritable();
 		}
+	}
+
+	private void writable() {
+		SessionStatus.getInstance().setWindowAlpha(HWL_ALPHA_MAX);
+	}
+	
+	private void disWritable() {
+		SessionStatus.getInstance().setWindowAlpha(HWL_ALPHA_MIN);
 	}
 
 	/**

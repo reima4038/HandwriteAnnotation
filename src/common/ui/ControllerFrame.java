@@ -20,6 +20,8 @@ public class ControllerFrame extends JFrame {
 		ControllerPanel clPanel = ControllerPanel.getInstance();
 		getContentPane().add(clPanel, BorderLayout.CENTER);
 		pack();
+		//常に最上面に
+//		setAlwaysOnTop(true);
 		setLocation(800, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

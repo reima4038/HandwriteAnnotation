@@ -249,7 +249,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 
 	@Override
 	protected void frameUpdate(int skipped) {
-		// スクロールバーの情報を最新に保つ　TODO:これのせいで描画の動作が重い
+		// スクロールバーの情報を最新に保つ
 		ControllerPanel.getInstance().getScrollInfoTrackPos();
 	}
 

@@ -54,7 +54,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private static final Dimension DM_BTN_LSTART = COMMON_BTN_SIZE;
 	private static final Dimension DM_BTN_LSTOP = COMMON_BTN_SIZE;
 	private static final Dimension DM_BTN_LEXPORT = COMMON_BTN_SIZE;
-	
+
 	// for Button Layout
 	private static final int ROW_UPPER = 10;
 	private static final int ROW_MIDDLE = 35;
@@ -81,17 +81,17 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private static final int HOTKEY_UNDO = 4;
 	private static final int HOTKEY_EXIT = 5;
 
-	//シングルトン
+	// シングルトン
 	private static ControllerPanel cPanel;
 
-	//コンポーネント
+	// コンポーネント
 	private JButton bWriteMode;
 	private JButton bClearWindow;
 	private JButton bColorSet;
 	private JButton bLogStart;
 	private JButton bLogStop;
 	private JButton bLogExport;
-	
+
 	private ControllerPanel() {
 		setPreferredSize(PANEL_SIZE);
 		setLayout(null);
@@ -163,7 +163,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 		this.add(bLogStart);
 		this.add(bLogStop);
 		this.add(bLogExport);
-		
+
 	}
 
 	public static ControllerPanel getInstance() {
@@ -203,22 +203,20 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	 */
 	@Override
 	public void onHotKey(int id) {
-		switch (id) {
-		case HOTKEY_GET_WHND:
+		if (id == HOTKEY_GET_WHND){
 			getHWnd();
-			break;
-		case HOTKEY_WRITABLE:
+		}
+		else if (id == HOTKEY_WRITABLE){
 			changeWritable();
-			break;
-		case HOTKEY_CLEAR:
+		}
+		else if (id == HOTKEY_CLEAR){
 			clearAnnotation();
-			break;
-		case HOTKEY_UNDO:
+		}
+		else if (id == HOTKEY_UNDO){
 			undoAnnotation();
-			break;
-		case HOTKEY_EXIT:
+		}
+		else if (id == HOTKEY_EXIT){
 			System.exit(0);
-			break;
 		}
 	}
 
@@ -235,8 +233,8 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private void undoAnnotation() {
 		SessionStatus ss = SessionStatus.getInstance();
 		int lrSize = ss.getLineRecords().size();
-		if(lrSize > 0){
-			//末尾の要素を削除
+		if (lrSize > 0) {
+			// 末尾の要素を削除
 			ss.getLineRecords().remove(lrSize - 1);
 		}
 	}
@@ -262,7 +260,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 		POINT p = null;
 		PointerInfo pi = null;
 		RECT wRect = null;
-		
+
 		// マウスポインタ位置を取得
 		pi = MouseInfo.getPointerInfo();
 
@@ -296,37 +294,35 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			Utl.printlnErr("手書き注釈レイヤのインスタンスが生成されていません。");
 		}
 		Utl.dPrintln("	手書き注釈レイヤの大きさを変更しました。");
-		
+
 		// セッションステータスにhwndを登録
 		SessionStatus.getInstance().sethWnd(hWnd);
 		Utl.dPrintln("	セッションにハンドルを登録しました。");
-		
-		//スクロールバーの現在の状況を取得・初期化
+
+		// スクロールバーの現在の状況を取得・初期化
 		getScrollbarInfoALL();
 
 	}
 
 	/**
-	 * 縦スクロールバーの情報を全て取得する
-	 * Win32API
+	 * 縦スクロールバーの情報を全て取得する Win32API
 	 */
 	public void getScrollbarInfoALL() {
 		SessionStatus ss = SessionStatus.getInstance();
-		if(ss.getScrV() == null){
+		if (ss.getScrV() == null) {
 			ss.setScrV(new SCROLLINFO());
 		}
 		ss.getScrV().cbSize = SCROLLINFO.sizeof;
 		ss.getScrV().fMask = OS.SIF_ALL;
 		OS.GetScrollInfo(ss.gethWnd(), OS.SB_VERT, ss.getScrV());
 	}
-	
+
 	/**
-	 * 縦スクロールバーの情報のうち、現在の位置だけ取得する
-	 * Win32API
+	 * 縦スクロールバーの情報のうち、現在の位置だけ取得する Win32API
 	 */
-	public void getScrollInfoTrackPos(){
+	public void getScrollInfoTrackPos() {
 		SessionStatus ss = SessionStatus.getInstance();
-		if(ss.getScrV() == null){
+		if (ss.getScrV() == null) {
 			ss.setScrV(new SCROLLINFO());
 		}
 		ss.getScrV().cbSize = SCROLLINFO.sizeof;

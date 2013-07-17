@@ -41,7 +41,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 
 	private static final String NAME_BTN_WM = "WriteMode";
 	private static final String NAME_BTN_CW = "ClearWindow";
-	private static final String NAME_BTN_CS = "ColorSet";
+	private static final String NAME_BTN_CS = "ColorChange";
 	private static final String NAME_BTN_LSTART = "LogStart";
 	private static final String NAME_BTN_LSTOP = "LogStop";
 	private static final String NAME_BTN_LEXPORT = "LogExport";
@@ -186,7 +186,13 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			clearAnnotation();
 
 		} else if (ev.getActionCommand() == NAME_BTN_CS) {
-			System.out.println("Button:ColorSet is Pressed.");
+			System.out.println("Button:ColorChange is Pressed.");
+			//ボタンを押す度に描画色青と赤を切り替え
+			if (SessionStatus.getInstance().getCurrentLineColor() == COLOR_RED) {
+				SessionStatus.getInstance().setCurrentLineColor(COLOR_BLUE);
+			} else {
+				SessionStatus.getInstance().setCurrentLineColor(COLOR_RED);
+			}
 
 		} else if (ev.getActionCommand() == NAME_BTN_LSTART) {
 			System.out.println("Button:LoggingStart is Pressed.");
@@ -202,7 +208,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	}
 
 	/**
-	 * ホットキー押下時の処理実装 
+	 * ホットキー押下時の処理実装
 	 */
 	@Override
 	public void onHotKey(int id) {
@@ -254,7 +260,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	private void writable() {
 		SessionStatus.getInstance().setWindowAlpha(HWL_ALPHA_MAX);
 	}
-	
+
 	private void disWritable() {
 		SessionStatus.getInstance().setWindowAlpha(HWL_ALPHA_MIN);
 	}

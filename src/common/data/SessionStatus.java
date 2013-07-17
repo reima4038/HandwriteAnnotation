@@ -80,6 +80,8 @@ public class SessionStatus implements Prefs{
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();
 		
+		currentLineColor = COLOR_RED;
+		
 		hWnd = -1;
 		dWidth = -1;
 		dHeight = -1;

@@ -20,4 +20,13 @@ public interface Prefs {
 	
 	//手書き注釈レイヤのアルファ値下限
 	public static final int HWL_ALPHA_MIN = 0;
+	
+	/*-------------------------------------------------
+	 * 定数 
+	 *------------------------------------------------*/
+	
+	//手書き注釈の色
+	public static final int COLOR_RED = 0;
+	public static final int COLOR_BLUE = 1;
+	
 }

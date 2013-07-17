@@ -14,13 +14,14 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import common.data.LineRecord;
+import common.data.Prefs;
 import common.data.SessionStatus;
 import common.ui.ControllerPanel;
 import common.util.CDraw;
-import common.util.Utl;
 
 public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
-		implements MouseListener, MouseMotionListener {
+		implements MouseListener, MouseMotionListener, Prefs {
+
 	protected static Dimension PANEL_MAX_SIZE;
 	protected static Color panelBackground;
 
@@ -90,13 +91,19 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 	 * 
 	 * @param g
 	 */
-	protected void setLineColor(Graphics g) {
-		g.setColor(Color.black);
+	protected void setLineColor(Graphics g, int color) {
+		switch (color) {
+		case COLOR_RED:
+			g.setColor(Color.red);
+			break;
+		case COLOR_BLUE:
+			g.setColor(Color.blue);
+			break;
+		}
+
 	}
 
 	protected void drawHandwriteAnnotation(Graphics g) {
-		// 描画色の指定
-		setLineColor(g);
 		// 最新の注釈を描画
 		drawLatestRecord(g);
 		// 履歴の注釈を全て描画
@@ -113,10 +120,13 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 		int scrvTPos = 0;
 		Point p;
 		Point pp;
-
+		
 		if (ss.getScrV() != null) {
 			scrvTPos = ss.getScrV().nTrackPos;
 		}
+		
+		//描画色の設定
+		setLineColor(g, ss.getLatestLineRecord().getColor());
 
 		for (int i = 0; i < ss.getLatestLineRecord().getRecord().size(); i++) {
 			/*
@@ -151,6 +161,8 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 
 		for (int i = 0; i < ss.getLineRecords().size(); i++) {
 			for (int j = 0; j < ss.getLineRecords().get(i).getRecord().size(); j++) {
+				//描画色の設定
+				setLineColor(g, ss.getLineRecords().get(i).getColor());
 				if (j == 0) {
 					p = ss.getLineRecords().get(i).getRecord().get(j)
 							.getLocation();
@@ -232,25 +244,27 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 		// タイムスタンプを取得
 		releaseTimeStamp();
 		latestLineRecordProccess();
-		
-		//描画終了後,SessionStatusの描画フラグを取り下げる
+
+		// 描画終了後,SessionStatusの描画フラグを取り下げる
 		SessionStatus.getInstance().setDrawFlagOwn(false);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent ev) {
+		SessionStatus ss = SessionStatus.getInstance();
+		
 		// タイムスタンプを取得
 		clickTimeStamp();
 		// 描画中はSessionStatusの描画フラグを立てる
-		SessionStatus.getInstance().setDrawFlagOwn(true);
+		ss.setDrawFlagOwn(true);
 
 		// スクロールバーの操作量を加味した実際の描画位置(actualPoint)
 		Point ap = ev.getPoint();
 		// 縦スクロールバーの操作量だけｙ座標の記録位置をずらす
-		ap.y = ev.getPoint().y
-				+ SessionStatus.getInstance().getScrV().nTrackPos;
+		ap.y = ev.getPoint().y + ss.getScrV().nTrackPos;
 		// ドラッグした点をSessionStatusのlatestLineRecordsに格納
-		SessionStatus.getInstance().getLatestLineRecord().getRecord().add(ap);
+		ss.getLatestLineRecord().getRecord().add(ap);
+		ss.getLatestLineRecord().setColor(ss.getCurrentLineColor());
 
 	}
 
@@ -263,19 +277,20 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 	protected void frameUpdate(int skipped) {
 		// スクロールバーの情報を最新に保つ
 		ControllerPanel.getInstance().getScrollInfoTrackPos();
-		//　注釈の数を最新に保つ
+		// 　注釈の数を最新に保つ
 		countAnnotaionNumber();
 	}
-	
+
 	/**
 	 * アノテーションの数を最新に保つ
+	 * 
 	 * @return
 	 */
-	private void countAnnotaionNumber(){
+	private void countAnnotaionNumber() {
 		SessionStatus ss = SessionStatus.getInstance();
 		ss.setAnnoNum(ss.getLineRecords().size());
 	}
-	
+
 	@Override
 	protected void frameRender(Graphics2D g) {
 		// ウィンドウの透明度が変わったかを判定

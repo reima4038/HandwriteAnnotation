@@ -83,6 +83,13 @@ public class SessionStatus implements Prefs{
 		hWnd = -1;
 		dWidth = -1;
 		dHeight = -1;
+		
+		//自分のIPをセット
+		try {
+			myInetAddress = java.net.InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void initValSocket(String sIPAddress){
@@ -95,13 +102,6 @@ public class SessionStatus implements Prefs{
 			Utl.printlnErr("サーバのIPアドレスの初期化処理に失敗しました.\nサーバIPが指定されていません.");
 			e.printStackTrace();
 		}
-		
-		//自分のIPをセット
-		try {
-			myInetAddress = java.net.InetAddress.getLocalHost().toString();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public static SessionStatus getInstance(){
@@ -110,7 +110,6 @@ public class SessionStatus implements Prefs{
 		}
 		return sStatus;
 	}
-	
 	
 	/*
 	 * getter, setter
@@ -158,6 +157,54 @@ public class SessionStatus implements Prefs{
 
 	public SCROLLINFO getScrV() {
 		return scrV;
+	}
+
+	public int getAnnoNum() {
+		return annoNum;
+	}
+
+	public boolean isDrawFlagOwn() {
+		return drawFlagOwn;
+	}
+
+	public boolean isDrawFlagPartner() {
+		return drawFlagPartner;
+	}
+
+	public int getCurrentLineColor() {
+		return currentLineColor;
+	}
+
+	public int getLoggingStartTime() {
+		return loggingStartTime;
+	}
+
+	public int getLoggingStopTime() {
+		return loggingStopTime;
+	}
+
+	public void setAnnoNum(int annoNum) {
+		this.annoNum = annoNum;
+	}
+
+	public void setDrawFlagOwn(boolean drawFlagOwn) {
+		this.drawFlagOwn = drawFlagOwn;
+	}
+
+	public void setDrawFlagPartner(boolean drawFlagPartner) {
+		this.drawFlagPartner = drawFlagPartner;
+	}
+
+	public void setCurrentLineColor(int currentLineColor) {
+		this.currentLineColor = currentLineColor;
+	}
+
+	public void setLoggingStartTime(int loggingStartTime) {
+		this.loggingStartTime = loggingStartTime;
+	}
+
+	public void setLoggingStopTime(int loggingStopTime) {
+		this.loggingStopTime = loggingStopTime;
 	}
 
 	public void setScrV(SCROLLINFO scrV) {

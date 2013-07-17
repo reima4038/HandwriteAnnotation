@@ -67,15 +67,22 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 	 */
 	protected void drawStatus(Graphics g) {
 		// TODO:SessionStatusクラスからデータ持ってくるように
-
+		SessionStatus ss = SessionStatus.getInstance();
 		// 画面上の注釈数を描画
-		CDraw.drawString(g, "AnnotationNumber: " + 20, new Point(20, 20));
+		CDraw.drawString(g, "AnnotationNumber: " + ss.getAnnoNum(), new Point(
+				20, 20));
 		// 自分が描画中か
-		CDraw.drawString(g, "now Drawing...", new Point(20, 40));
+		if (ss.isDrawFlagOwn()) {
+			CDraw.drawString(g, "now Drawing...", new Point(20, 40));
+		}
 		// 相手が描画中か
-		CDraw.drawString(g, "Partner Drawing...", new Point(20, 60));
+		if (ss.isDrawFlagPartner()) {
+			CDraw.drawString(g, "Partner Drawing...", new Point(20, 60));
+		}
 		// ログデータ記録中か
-		CDraw.drawString(g, "REC", Color.red, new Point(20, 80));
+		if (ss.getRecordingFlag()) {
+			CDraw.drawString(g, "REC", Color.red, new Point(20, 80));
+		}
 	}
 
 	/**
@@ -225,15 +232,20 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 		// タイムスタンプを取得
 		releaseTimeStamp();
 		latestLineRecordProccess();
+		
+		//描画終了後,SessionStatusの描画フラグを取り下げる
+		SessionStatus.getInstance().setDrawFlagOwn(false);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent ev) {
-		// スクロールバーの操作量を加味した実際の描画位置(actualPoint)
-		Point ap = ev.getPoint();
-
 		// タイムスタンプを取得
 		clickTimeStamp();
+		// 描画中はSessionStatusの描画フラグを立てる
+		SessionStatus.getInstance().setDrawFlagOwn(true);
+
+		// スクロールバーの操作量を加味した実際の描画位置(actualPoint)
+		Point ap = ev.getPoint();
 		// 縦スクロールバーの操作量だけｙ座標の記録位置をずらす
 		ap.y = ev.getPoint().y
 				+ SessionStatus.getInstance().getScrV().nTrackPos;
@@ -251,8 +263,19 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 	protected void frameUpdate(int skipped) {
 		// スクロールバーの情報を最新に保つ
 		ControllerPanel.getInstance().getScrollInfoTrackPos();
+		//　注釈の数を最新に保つ
+		countAnnotaionNumber();
 	}
-
+	
+	/**
+	 * アノテーションの数を最新に保つ
+	 * @return
+	 */
+	private void countAnnotaionNumber(){
+		SessionStatus ss = SessionStatus.getInstance();
+		ss.setAnnoNum(ss.getLineRecords().size());
+	}
+	
 	@Override
 	protected void frameRender(Graphics2D g) {
 		// ウィンドウの透明度が変わったかを判定

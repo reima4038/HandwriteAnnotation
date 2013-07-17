@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-
+import common.data.SessionStatus;
 import common.ui.ControllerFrame;
 import common.util.Utl;
 
@@ -22,7 +22,10 @@ public class IntegratedServerLancherPanel extends JPanel implements
 
 	private static final String TEXT_WELCOME_MESSAGE = "For Server Integrated Ver.0.1";
 	private static final Point P_TEXT_WELCOME_MESSAGE = new Point(10, 20);
+	private static final String TEXT_BESIDE_OWN_IP = "Own IP: ";
+	private static final Point P_TEXT_BESIDE_OWN_IP = new Point(10, 50);
 
+	
 	private static final String NAME_BTN_LAUNCH = "Launch";
 	private static final String NAME_BTN_END = "End";
 
@@ -77,6 +80,7 @@ public class IntegratedServerLancherPanel extends JPanel implements
 		// Draw WelcomeMessage, Description
 		g.drawString(TEXT_WELCOME_MESSAGE, P_TEXT_WELCOME_MESSAGE.x,
 				P_TEXT_WELCOME_MESSAGE.y);
+		g.drawString(TEXT_BESIDE_OWN_IP + SessionStatus.getInstance().getMyInetAddress(), P_TEXT_BESIDE_OWN_IP.x, P_TEXT_BESIDE_OWN_IP.y);
 	}
 
 	@Override

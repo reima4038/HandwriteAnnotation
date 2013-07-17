@@ -18,24 +18,26 @@ import common.util.Utl;
 
 public class ClientLancherPanel extends JPanel implements ActionListener{
 	
-	private static final Dimension PANEL_SIZE = new Dimension(190, 110);
+	private static final Dimension PANEL_SIZE = new Dimension(190, 130);
 	private static final Color PANEL_BACKGROUND = Color.white;
 	
 	private static final String TEXT_WELCOME_MESSAGE = "For ClientSide Version0.1";
-	private static final String TEXT_BESIDE_TF_IP = "IP:";
+	private static final String TEXT_BESIDE_TF_IP = "Server IP:";
+	private static final String TEXT_BESIDE_OWN_IP = "Own IP: ";
 	private static final Point P_TEXT_WELCOME_MESSAGE = new Point(10, 20);
 	private static final Point P_TEXT_BESIDE_TF_IP = new Point(10, 50);
-	
+	private static final Point P_TEXT_BESIDE_OWN_IP = new Point(10, 80);
+
 	private static final String NAME_BTN_LAUNCH = "Launch";
 	private static final String NAME_BTN_END = "End";
 	
-	private static final Dimension DM_TF_IP = new Dimension(130, 20);
+	private static final Dimension DM_TF_IP = new Dimension(110, 20);
 	private static final Dimension DM_BTN_LAUNCH = new Dimension(80, 20);
 	private static final Dimension DM_BTN_END = new Dimension(80, 20);
 
-	private static final Point P_TF_IP = new Point(50, 37);
-	private static final Point P_BTN_LAUNCH = new Point(10, 70);
-	private static final Point P_BTN_END = new Point(100, 70);
+	private static final Point P_TF_IP = new Point(65, 37);
+	private static final Point P_BTN_LAUNCH = new Point(10, 95);
+	private static final Point P_BTN_END = new Point(100, 95);
 	
 	private static ClientLancherPanel clPanel;
 	
@@ -90,6 +92,7 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 		//Draw WelcomeMessage, Description
 		g.drawString(TEXT_WELCOME_MESSAGE, P_TEXT_WELCOME_MESSAGE.x, P_TEXT_WELCOME_MESSAGE.y);
 		g.drawString(TEXT_BESIDE_TF_IP, P_TEXT_BESIDE_TF_IP.x, P_TEXT_BESIDE_TF_IP.y);
+		g.drawString(TEXT_BESIDE_OWN_IP + SessionStatus.getInstance().getMyInetAddress(), P_TEXT_BESIDE_OWN_IP.x, P_TEXT_BESIDE_OWN_IP.y);
 	}
 	
 	@Override
@@ -103,7 +106,6 @@ public class ClientLancherPanel extends JPanel implements ActionListener{
 			HandwriteLayerFrame.getInstance().setVisible(true);
 			//Controller Launch
 			ControllerFrame.getInstance().setVisible(true);
-
 			
 		}else if(ev.getActionCommand() == NAME_BTN_END){
 			System.out.println("EndButton is Pressed.");

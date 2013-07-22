@@ -73,6 +73,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	// スクロールバーの太さ V:縦、W：横
 	public static final int SCROLL_V = 16;
 	public static final int SCROLL_W = 16;
+	
 
 	// HotKey
 	private static final int HOTKEY_GET_WHND = 1;

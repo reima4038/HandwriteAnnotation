@@ -32,6 +32,8 @@ public class ClientUDP extends AbstUDP {
 			socket.send(recordToSendPacket(lr));
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.toString();
 		}
 	}
 
@@ -41,22 +43,22 @@ public class ClientUDP extends AbstUDP {
 	public void receivePacket() {
 		LineRecord lr = null;
 		try {
-			if (socket == null){
+			if (socket == null) {
 				Utl.println("socket is null");
 			}
-			if (recvPacket == null){
+			if (recvPacket == null) {
 				Utl.println("recvPacket is null");
 			}
 			Utl.dPrintln("パケット受信待機");
 			socket.receive(recvPacket);
 			Utl.dPrintln("パケット受信");
-			
-			//受信したパケットをラインレコードに変換
+
+			// 受信したパケットをラインレコードに変換
 			lr = transPacketToLineRecord(recvPacket);
 			lr.show();
 
 			// 受信したラインレコードをセッションステータスに反映
-//			SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
+			// SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
 			Utl.dPrintln("受信したラインレコードをセッションステータスに反映");
 			SessionStatus.getInstance().getLineRecords().add(lr);
 		} catch (IOException e) {
@@ -71,7 +73,7 @@ public class ClientUDP extends AbstUDP {
 	}
 
 	public static ClientUDP getInstance() {
-		if(cUDP == null){
+		if (cUDP == null) {
 			cUDP = new ClientUDP();
 		}
 		return cUDP;
@@ -82,26 +84,27 @@ public class ClientUDP extends AbstUDP {
 	 * 
 	 * @return
 	 */
-	public DatagramPacket recordToSendPacket(LineRecord lr){
+	public DatagramPacket recordToSendPacket(LineRecord lr) {
 		DatagramPacket sendPacket;
 		byte[] sendData;
-		//ラインレコードをByteBuffer型に変換
+		// ラインレコードをByteBuffer型に変換
 		ByteBuffer bBuf = transLineRecordToByteBuffer(lr);
-		
-		//送信用データを用意
+
+		// 送信用データを用意
 		sendData = new byte[bBuf.position()];
 		System.arraycopy(bBuf.array(), 0, sendData, 0, sendData.length);
-		
-		//サーバーのアドレスをセッションステータスから取得
-		Utl.dPrintln("PacketPreparating.Sending to: " + SessionStatus.getInstance().getSInetAddress());
+
+		// サーバーのアドレスをセッションステータスから取得
+		Utl.dPrintln("PacketPreparating.Sending to: "
+				+ SessionStatus.getInstance().getSInetAddress());
 		InetAddress ip = SessionStatus.getInstance().getSInetAddress();
-		
-		//送信用データ、アドレス、ポートの情報を元に送信用パケットを用意
-		sendPacket = new DatagramPacket(sendData, sendData.length, ip, Prefs.DEFAULT_PORT);
-		
+
+		// 送信用データ、アドレス、ポートの情報を元に送信用パケットを用意
+		sendPacket = new DatagramPacket(sendData, sendData.length, ip,
+				Prefs.DEFAULT_PORT);
+
 		return sendPacket;
 	}
-
 
 	/*
 	 * getter, setter

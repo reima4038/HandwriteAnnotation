@@ -13,6 +13,7 @@ import client.ui.HandwriteLayerPanel;
 
 import common.data.LineRecord;
 import common.data.SessionStatus;
+import common.ui.ControllerPanel;
 import common.util.Utl;
 
 public class HandwriteLayerPanelTest {
@@ -32,6 +33,9 @@ public class HandwriteLayerPanelTest {
 	 * ドラッグしたポイントを適切に格納できているか
 	 */
 	public void takeDraggedPointIntoTempLineRecords() {
+		// スクロールバーの初期値をinitする
+		ControllerPanel.getInstance().getScrollInfoTrackPos();
+
 		// 適当な直線データを用意
 		Point[] draggedLine = new Point[30];
 		for (int i = 0; i < draggedLine.length; i++) {
@@ -78,9 +82,9 @@ public class HandwriteLayerPanelTest {
 		// マウスリスナーがimplementされたテスト対象クラスのインスタンスを用意
 		HandwriteLayerPanel var = HandwriteLayerPanel.getInstance();
 		SessionStatus ss = SessionStatus.getInstance();
-		
-		//レコード長さの初期化
-		if(ss.getLatestLineRecord().getRecord().size() > 0){
+
+		// レコード長さの初期化
+		if (ss.getLatestLineRecord().getRecord().size() > 0) {
 			ss.getLatestLineRecord().initDefaultValue();
 		}
 
@@ -95,8 +99,8 @@ public class HandwriteLayerPanelTest {
 			var.mouseDragged(new MouseEvent(var, -1, -1, -1, draggedLine[i].x,
 					draggedLine[i].y, 0, false));
 		}
-		
-		//最初からレコード長が0ならテスト失敗
+
+		// 最初からレコード長が0ならテスト失敗
 		if (ss.getLatestLineRecord().getRecord().size() == 0) {
 			fail("テスト前提条件を満たしていません. テスト名:takeDraggedPointIntoTempLineRecordsの後に行われているか確認してください.\n"
 					+ " expect: RecordSize over 0 "
@@ -122,9 +126,9 @@ public class HandwriteLayerPanelTest {
 		// マウスリスナーがimplementされたテスト対象クラスのインスタンスを用意
 		HandwriteLayerPanel var = HandwriteLayerPanel.getInstance();
 		SessionStatus ss = SessionStatus.getInstance();
-		
-		//レコード長さの初期化
-		if(ss.getLatestLineRecord().getRecord().size() > 0){
+
+		// レコード長さの初期化
+		if (ss.getLatestLineRecord().getRecord().size() > 0) {
 			ss.getLatestLineRecord().initDefaultValue();
 		}
 
@@ -139,15 +143,15 @@ public class HandwriteLayerPanelTest {
 			var.mouseDragged(new MouseEvent(var, -1, -1, -1, draggedLine[i].x,
 					draggedLine[i].y, 0, false));
 		}
-		
-		//最初からレコード長が0ならテスト失敗
+
+		// 最初からレコード長が0ならテスト失敗
 		if (ss.getLatestLineRecord().getRecord().size() == 0) {
 			fail("テスト前提条件を満たしていません. テスト名:takeDraggedPointIntoTempLineRecordsの後に行われているか確認してください.\n"
 					+ " expect: RecordSize over 0 "
 					+ " actual: RecordSize is"
 					+ ss.getLatestLineRecord().getRecord().size());
 		}
-		
+
 		// 最新注釈レコードのクローンを確保（マウスリリースされると最新の注釈レコードが初期化されるため）
 		LineRecord latestRecordClone = ss.getLatestLineRecord().clone();
 
@@ -155,43 +159,44 @@ public class HandwriteLayerPanelTest {
 		var.mouseReleased(new MouseEvent(var, -1, -1, -1, 0, 0, 0, false));
 
 		/*
-		 *  最新の注釈レコードを統合レコードに移行できているか
+		 * 最新の注釈レコードを統合レコードに移行できているか
 		 */
-		//計算用変数 lineRecordsSize, lineRecordsLastIndex
+		// 計算用変数 lineRecordsSize, lineRecordsLastIndex
 		int lRsize = 0;
 		int lRLastIndex = 0;
-		
-		if(ss.getLineRecords().size() > 0){
+
+		if (ss.getLineRecords().size() > 0) {
 			lRsize = ss.getLineRecords().size();
+		} else {
+			fail("最新の注釈レコードが統合レコードに移行されていません.\n" + "統合レコードがありません.");
 		}
-		else{
-			fail("最新の注釈レコードが統合レコードに移行されていません.\n" + 
-					"統合レコードがありません.");
-		}
-		
-		if(lRsize <= 0){
+
+		if (lRsize <= 0) {
 			fail("最新の注釈レコードが記録されていないか, 移行が行われていません.\n");
-		}
-		else{
+		} else {
 			lRLastIndex = lRsize - 1;
 		}
 
 		for (int i = 0; i < lRsize; i++) {
-			if (ss.getLineRecords().get(lRLastIndex).getRecord().get(i) != latestRecordClone.getRecord().get(i)) {
+			if (ss.getLineRecords().get(lRLastIndex).getRecord().get(i) != latestRecordClone
+					.getRecord().get(i)) {
 				fail("最新の注釈レコードが統合レコードに移行されていません.\n"
-						+ "errorIndex: " + i
+						+ "errorIndex: "
+						+ i
 						+ " expectValue: "
 						+ ss.getLatestLineRecord().getRecord().get(i)
 						+ " actual: "
-						+ ss.getLineRecords().get(lRLastIndex).getRecord().get(i));
+						+ ss.getLineRecords().get(lRLastIndex).getRecord()
+								.get(i));
 			}
 		}
 
 		// 最新の注釈レコードが削除されているかどうか
-		if(ss.getLatestLineRecord().getRecord().size() != 0){
-			fail("最新の注釈レコードが削除されていません\n" + 
-					"expect: the size of LatestLineRecord is 0" + 
-					" actual: the size of LatestLineRecord is " + ss.getLatestLineRecord().getRecord().size());
+		if (ss.getLatestLineRecord().getRecord().size() != 0) {
+			fail("最新の注釈レコードが削除されていません\n"
+					+ "expect: the size of LatestLineRecord is 0"
+					+ " actual: the size of LatestLineRecord is "
+					+ ss.getLatestLineRecord().getRecord().size());
 		}
 
 	}

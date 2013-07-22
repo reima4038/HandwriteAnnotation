@@ -277,7 +277,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 	protected void frameUpdate(int skipped) {
 		// スクロールバーの情報を最新に保つ
 		ControllerPanel.getInstance().getScrollInfoTrackPos();
-		// 　注釈の数を最新に保つ
+		// 注釈の数を最新に保つ
 		countAnnotaionNumber();
 	}
 

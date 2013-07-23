@@ -17,11 +17,14 @@ import org.eclipse.swt.internal.win32.POINT;
 import org.eclipse.swt.internal.win32.RECT;
 import org.eclipse.swt.internal.win32.SCROLLINFO;
 
+import server.udp.IntegratedServerUDP;
 import server.ui.integrated.IntegratedHandwriteLayerPanel;
+import client.udp.ClientUDP;
 import client.ui.HandwriteLayerPanel;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
 import common.util.FileOutput;
@@ -73,7 +76,6 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	// スクロールバーの太さ V:縦、W：横
 	public static final int SCROLL_V = 16;
 	public static final int SCROLL_W = 16;
-	
 
 	// HotKey
 	private static final int HOTKEY_GET_WHND = 1;
@@ -188,7 +190,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 
 		} else if (ev.getActionCommand() == NAME_BTN_CS) {
 			System.out.println("Button:ColorChange is Pressed.");
-			//ボタンを押す度に描画色青と赤を切り替え
+			// ボタンを押す度に描画色青と赤を切り替え
 			if (SessionStatus.getInstance().getCurrentLineColor() == COLOR_RED) {
 				SessionStatus.getInstance().setCurrentLineColor(COLOR_BLUE);
 			} else {
@@ -233,12 +235,51 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 	 */
 	private void clearAnnotation() {
 		SessionStatus.getInstance().getLineRecords().clear();
+		// 通信相手に削除命令を送信
+		LineRecord lr = new LineRecord();
+		lr.setUserID(LineRecord.USERID_SYSTEM_COMMAND_REMOVE);
+		if (ClientUDP.isInstance()){
+			ClientUDP.getInstance().sendPacket(lr);
+		}
+		else if (IntegratedServerUDP.isInstance()){
+			IntegratedServerUDP.getInstance().sendPacket(lr);
+		}
+	}
+
+	/**
+	 * 手書き注釈を全消去（外部からの操作用） 通信相手が注釈を消去した時に利用する
+	 * clearAnnotation()を使うと更に削除命令を出してしまうので、こちらは単純に削除するのみ
+	 */
+	public void clearAnnotationForRecvPacket() {
+		SessionStatus.getInstance().getLineRecords().clear();
 	}
 
 	/**
 	 * 手書き注釈のアンドゥ
 	 */
 	private void undoAnnotation() {
+		SessionStatus ss = SessionStatus.getInstance();
+		int lrSize = ss.getLineRecords().size();
+		if (lrSize > 0) {
+			// 末尾の要素を削除
+			ss.getLineRecords().remove(lrSize - 1);
+		}
+		// 通信相手にアンドゥ命令を送信
+		LineRecord lr = new LineRecord();
+		lr.setUserID(LineRecord.USERID_SYSTEM_COMMAND_UNDO);
+		if (ClientUDP.isInstance()){
+			ClientUDP.getInstance().sendPacket(lr);
+		}
+		else if (IntegratedServerUDP.isInstance()){
+			IntegratedServerUDP.getInstance().sendPacket(lr);
+		}
+		Utl.dPrintln("アンドゥ命令を送信");
+	}
+
+	/**
+	 * 手書き注釈のアンドゥ（外部からの操作用）
+	 */
+	public void undoAnnotationForRecvPacket() {
 		SessionStatus ss = SessionStatus.getInstance();
 		int lrSize = ss.getLineRecords().size();
 		if (lrSize > 0) {

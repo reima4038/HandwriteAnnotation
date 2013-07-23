@@ -11,6 +11,7 @@ import common.abst.AbstUDP;
 import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
+import common.ui.ControllerPanel;
 import common.util.Utl;
 
 public class IntegratedServerUDP extends AbstUDP {
@@ -31,12 +32,22 @@ public class IntegratedServerUDP extends AbstUDP {
 		}
 		return isUDP;
 	}
-
-	@Override
+	
+	/**
+	 * インスタンスがあるか
+	 * @return
+	 */
+	public static boolean isInstance(){
+		if(isUDP == null) return false;
+		else return true;
+	}
+	
+	/**
+	 * パケット送信
+	 */
 	public void sendPacket(LineRecord lr) {
 		try {
 			socket.send(recordToSendPacket(lr));
-			Utl.dPrintln("IP:" + clientAddress.getHostAddress() + " にパケット送信");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e){
@@ -44,7 +55,7 @@ public class IntegratedServerUDP extends AbstUDP {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * パケット受信
 	 */
@@ -65,10 +76,23 @@ public class IntegratedServerUDP extends AbstUDP {
 			lr = transPacketToLineRecord(recvPacket);
 			//パケット送信元のIPを保存（初回の通信のみ）
 			preserveIP(recvPacket);
-
-			// 受信したラインレコードをセッションステータスに反映
-			Utl.dPrintln("ラインレコードをセッションステータスに反映");
-			SessionStatus.getInstance().getLineRecords().add(lr);
+			
+			//削除、アンドゥ、注釈付与をUserIDから判断
+			switch(lr.getUserID()){
+			case LineRecord.USERID_SYSTEM_COMMAND_REMOVE:
+				Utl.dPrintln("通信相手からの注釈削除命令受信");
+				ControllerPanel.getInstance().clearAnnotationForRecvPacket();
+				break;
+			case LineRecord.USERID_SYSTEM_COMMAND_UNDO:
+				Utl.dPrintln("通信相手からのアンドゥ命令受信");
+				ControllerPanel.getInstance().undoAnnotationForRecvPacket();
+				break;
+			default:
+				// 受信したラインレコードをセッションステータスに反映
+				Utl.dPrintln("ラインレコードをセッションステータスに反映");
+				SessionStatus.getInstance().getLineRecords().add(lr);
+				break;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

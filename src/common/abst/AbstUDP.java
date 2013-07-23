@@ -1,6 +1,7 @@
 package common.abst;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -9,10 +10,13 @@ import java.nio.ByteOrder;
 
 import common.data.LineRecord;
 import common.data.Prefs;
-import common.data.SessionStatus;
 import common.util.Utl;
 
 public abstract class AbstUDP implements Runnable, Prefs{
+	
+	protected static final int COMMAND_ANNOTATION = 0;
+	protected static final int COMMAND_REMOVE = 1;
+	protected static final int COMMAND_UNDO = 2;
 	
 	//スレッドスリープ
 	private static final int THREAD_SLEEP = 500;
@@ -128,7 +132,7 @@ public abstract class AbstUDP implements Runnable, Prefs{
 	 * パケット送信
 	 */
 	public abstract void sendPacket(LineRecord lr);
-
+	
 	/**
 	 * パケット受信
 	 */

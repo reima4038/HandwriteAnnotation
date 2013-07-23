@@ -12,6 +12,10 @@ import common.util.Utl;
  * 
  */
 public class LineRecord {
+	
+	//削除、アンドゥ、注釈付与をUserIDから判断
+	public static final int USERID_SYSTEM_COMMAND_REMOVE = 10000;
+	public static final int USERID_SYSTEM_COMMAND_UNDO = 10001;
 
 	public static final int DEFAULT_VALUE = -1;
 	

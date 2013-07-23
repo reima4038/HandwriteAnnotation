@@ -1,18 +1,16 @@
 package client.udp;
 
-import java.awt.Point;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import common.abst.AbstUDP;
 import common.data.LineRecord;
 import common.data.Prefs;
 import common.data.SessionStatus;
+import common.ui.ControllerPanel;
 import common.util.Utl;
 
 public class ClientUDP extends AbstUDP {
@@ -22,18 +20,18 @@ public class ClientUDP extends AbstUDP {
 	private ClientUDP() {
 		super();
 	}
-
+	
 	/**
 	 * パケット送信
 	 */
 	public void sendPacket(LineRecord lr) {
-		Utl.dPrintln("SendPacket");
 		try {
 			socket.send(recordToSendPacket(lr));
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.toString();
+		} catch (NullPointerException e){
+			Utl.printlnErr("パケット送信先が見つかりません.");
+			e.printStackTrace();
 		}
 	}
 
@@ -57,15 +55,27 @@ public class ClientUDP extends AbstUDP {
 			lr = transPacketToLineRecord(recvPacket);
 			lr.show();
 
-			// 受信したラインレコードをセッションステータスに反映
-			// SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
-			Utl.dPrintln("受信したラインレコードをセッションステータスに反映");
-			SessionStatus.getInstance().getLineRecords().add(lr);
+			//削除、アンドゥ、注釈付与をUserIDから判断
+			switch(lr.getUserID()){
+			case LineRecord.USERID_SYSTEM_COMMAND_REMOVE:
+				Utl.dPrintln("通信相手からの注釈削除命令受信");
+				ControllerPanel.getInstance().clearAnnotationForRecvPacket();
+				break;
+			case LineRecord.USERID_SYSTEM_COMMAND_UNDO:
+				Utl.dPrintln("通信相手からのアンドゥ命令受信");
+				ControllerPanel.getInstance().undoAnnotationForRecvPacket();
+				break;
+			default:
+				// 受信したラインレコードをセッションステータスに反映
+				// SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
+				Utl.dPrintln("受信したラインレコードをセッションステータスに反映");
+				SessionStatus.getInstance().getLineRecords().add(lr);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	protected void frameUpdate() {
 		// パケットの受信待機
@@ -77,6 +87,15 @@ public class ClientUDP extends AbstUDP {
 			cUDP = new ClientUDP();
 		}
 		return cUDP;
+	}
+	
+	/**
+	 * インスタンスがあるか
+	 * @return
+	 */
+	public static boolean isInstance(){
+		if(cUDP == null) return false;
+		else return true;
 	}
 
 	/**
@@ -105,7 +124,7 @@ public class ClientUDP extends AbstUDP {
 
 		return sendPacket;
 	}
-
+	
 	/*
 	 * getter, setter
 	 */

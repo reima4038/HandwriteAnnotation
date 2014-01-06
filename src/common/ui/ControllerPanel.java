@@ -206,7 +206,7 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 		} else if (ev.getActionCommand() == NAME_BTN_LEXPORT) {
 			System.out.println("Button:LogExport is Pressed.");
 			// ログの書き込み
-			FileOutput.output(SessionStatus.getInstance().getLineRecords());
+			FileOutput.output(SessionStatus.getInstance().getExportRecords());
 		}
 	}
 
@@ -225,9 +225,11 @@ public class ControllerPanel extends JPanel implements HotkeyListener,
 			clearAnnotation();
 		else if (id == HOTKEY_UNDO)
 			undoAnnotation();
-		else if (id == HOTKEY_EXIT)
+		else if (id == HOTKEY_EXIT){
+			// ログの書き込み
+			FileOutput.output(SessionStatus.getInstance().getExportRecords());
 			System.exit(0);
-
+		}
 	}
 
 	/**

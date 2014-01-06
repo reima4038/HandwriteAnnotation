@@ -55,6 +55,9 @@ public class HandwriteLayerPanel extends AbstHandwriteLayerPanel{
 		//最新の注釈レコードを統合レコードに移行
 		ss.getLineRecords().add(lr);
 		
+		//最新の注釈レコードをログ用レコードに移行
+		ss.getExportRecords().add(lr);
+		
 		//最新の注釈を破棄
 		ss.getLatestLineRecord().initDefaultValue();
 	}

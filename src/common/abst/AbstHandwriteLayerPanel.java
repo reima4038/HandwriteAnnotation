@@ -18,6 +18,7 @@ import common.data.Prefs;
 import common.data.SessionStatus;
 import common.ui.ControllerPanel;
 import common.util.CDraw;
+import common.util.Utl;
 
 public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 		implements MouseListener, MouseMotionListener, Prefs {
@@ -222,6 +223,7 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 
 	@Override
 	public void mouseClicked(MouseEvent ev) {
+
 	}
 
 	@Override
@@ -236,7 +238,11 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 
 	@Override
 	public void mousePressed(MouseEvent ev) {
-
+		// タイムスタンプを取得
+		clickTimeStamp();
+		SessionStatus ss = SessionStatus.getInstance();
+		//IPアドレスをintにして渡すため、”.”を削除してint型にパース
+		ss.getLatestLineRecord().setUserID(Integer.parseInt(ss.getInstance().getMyInetAddress().replaceAll("\\.", "")));
 	}
 
 	@Override
@@ -252,9 +258,9 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 	@Override
 	public void mouseDragged(MouseEvent ev) {
 		SessionStatus ss = SessionStatus.getInstance();
+
 		
-		// タイムスタンプを取得
-		clickTimeStamp();
+
 		// 描画中はSessionStatusの描画フラグを立てる
 		ss.setDrawFlagOwn(true);
 

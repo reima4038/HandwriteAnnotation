@@ -156,6 +156,10 @@ public class SessionStatus implements Prefs{
 		return dWidth;
 	}
 
+	public void setMyInetAddress(String myInetAddress) {
+		this.myInetAddress = myInetAddress;
+	}
+
 	public int getdHeight() {
 		return dHeight;
 	}

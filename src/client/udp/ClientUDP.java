@@ -70,6 +70,7 @@ public class ClientUDP extends AbstUDP {
 				// SessionStatus.getInstance().setReceivedLineRecord(lr);　　//直接LineRecordsに入れればReceivedLineRecordは必要ないかも……
 				Utl.dPrintln("受信したラインレコードをセッションステータスに反映");
 				SessionStatus.getInstance().getLineRecords().add(lr);
+				SessionStatus.getInstance().getExportRecords().add(lr);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

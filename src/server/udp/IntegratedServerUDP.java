@@ -91,6 +91,7 @@ public class IntegratedServerUDP extends AbstUDP {
 				// 受信したラインレコードをセッションステータスに反映
 				Utl.dPrintln("ラインレコードをセッションステータスに反映");
 				SessionStatus.getInstance().getLineRecords().add(lr);
+				SessionStatus.getInstance().getExportRecords().add(lr);
 				break;
 			}
 		} catch (IOException e) {

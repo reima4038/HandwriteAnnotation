@@ -23,6 +23,9 @@ import common.util.Utl;
 public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 		implements MouseListener, MouseMotionListener, Prefs {
 
+	//ラインレコードへのユーザID挿入時失敗したときの代替ID
+	private static final int USERID_FOR_ERROR = 101010;
+	
 	protected static Dimension PANEL_MAX_SIZE;
 	protected static Color panelBackground;
 
@@ -241,8 +244,16 @@ public abstract class AbstHandwriteLayerPanel extends AbstRunnablePanel
 		// タイムスタンプを取得
 		clickTimeStamp();
 		SessionStatus ss = SessionStatus.getInstance();
-		//IPアドレスをintにして渡すため、”.”を削除してint型にパース
-		ss.getLatestLineRecord().setUserID(Integer.parseInt(ss.getInstance().getMyInetAddress().replaceAll("\\.", "")));
+
+		try{
+			//IPアドレスをintにして渡すため、”.”を削除してint型にパース
+			ss.getLatestLineRecord().setUserID(Integer.parseInt(ss.getMyInetAddress().replaceAll("\\.", "")));
+		}
+		catch(NumberFormatException e){
+			Utl.printlnErr("LineRecordへのユーザID挿入に失敗しました。");
+			ss.getLatestLineRecord().setUserID(USERID_FOR_ERROR);
+			e.printStackTrace();
+		}
 	}
 
 	@Override

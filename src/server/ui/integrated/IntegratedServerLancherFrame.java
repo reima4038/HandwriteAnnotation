@@ -3,8 +3,7 @@ package server.ui.integrated;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-
-import server.ui.only.ServerLancherPanel;
+import common.abst.LogExportListener;
 
 public class IntegratedServerLancherFrame extends JFrame{
 	
@@ -18,6 +17,8 @@ public class IntegratedServerLancherFrame extends JFrame{
 		getContentPane().add(sliPanel, BorderLayout.CENTER);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//windowを閉じた時に手書き注釈ログの書き出しを行う
+		this.addWindowListener(new LogExportListener());
 	}
 
 	public static IntegratedServerLancherFrame getInstance(){

@@ -3,6 +3,7 @@ package common.ui;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+import common.abst.LogExportListener;
 
 /**
  * クライアント側で操作するアプリケーションのコントローラのフレーム
@@ -24,6 +25,8 @@ public class ControllerFrame extends JFrame {
 		setAlwaysOnTop(true);
 		setLocation(800, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//windowを閉じた時に手書き注釈ログの書き出しを行う
+		this.addWindowListener(new LogExportListener());
 	}
 
 	public static ControllerFrame getInstance() {

@@ -47,6 +47,8 @@ public class SessionStatus implements Prefs{
 	private LineRecord receivedLineRecord;
 	//統合したレコード
 	private ArrayList<LineRecord> lineRecords;
+	//エクスポート用のレコード
+	private ArrayList<LineRecord> exportRecords;
 	
 	/*------------------------------------------
 	 * for Logging 注釈ログの記録に関して
@@ -79,6 +81,7 @@ public class SessionStatus implements Prefs{
 		latestLineRecord = new LineRecord();
 		receivedLineRecord = new LineRecord();
 		lineRecords = new ArrayList<LineRecord>();
+		exportRecords = new ArrayList<LineRecord>();
 		
 		currentLineColor = COLOR_RED;
 		
@@ -183,6 +186,14 @@ public class SessionStatus implements Prefs{
 
 	public int getLoggingStopTime() {
 		return loggingStopTime;
+	}
+
+	public ArrayList<LineRecord> getExportRecords() {
+		return exportRecords;
+	}
+
+	public void setExportRecords(ArrayList<LineRecord> exportRecords) {
+		this.exportRecords = exportRecords;
 	}
 
 	public void setAnnoNum(int annoNum) {

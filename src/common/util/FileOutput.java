@@ -24,8 +24,8 @@ public class FileOutput implements Prefs{
 	public static void output(ArrayList<LineRecord> lrs){
 		Utl.dPrintln("ログのファイル書き込み開始");
 		try {
-			Utl.dPrintln("出力ファイル名: " + LOG_FILE_NAME);
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(LOG_FILE_NAME + ".csv"))));
+			Utl.dPrintln("出力ファイル名: " + LOG_FILE_NAME + System.currentTimeMillis());
+			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(LOG_FILE_NAME + System.currentTimeMillis() + ".csv"))));
 			CSVWriter writer = new CSVWriter(pw);
 			
 			for(int i = 0; i < lrs.size(); i++){

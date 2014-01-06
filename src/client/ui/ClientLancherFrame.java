@@ -1,6 +1,8 @@
 package client.ui;
 
 import java.awt.BorderLayout;
+import common.abst.LogExportListener;
+
 
 import javax.swing.JFrame;
 
@@ -16,6 +18,8 @@ public class ClientLancherFrame extends JFrame{
 		getContentPane().add(clPanel, BorderLayout.CENTER);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//windowを閉じた時に手書き注釈ログの書き出しを行う
+		this.addWindowListener(new LogExportListener());
 	}
 	
 	
